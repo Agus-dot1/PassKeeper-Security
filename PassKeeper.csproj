@@ -21,9 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
     <Folder Include="ViewModels\Pages\" />
-    <Folder Include="ViewModels\Windows\" />
     <Folder Include="Assets\" />
     <Folder Include="Views\Pages\" />
   </ItemGroup>

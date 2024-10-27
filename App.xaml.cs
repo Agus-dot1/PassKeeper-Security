@@ -1,5 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PassKeeper.Views.Windows;
+using PassKeeper.ViewModels.Windows;
 using System.IO;
 using System.Reflection;
 using System.Windows;
@@ -23,7 +26,11 @@ namespace PassKeeper
             .ConfigureAppConfiguration(c => { c.SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location)); })
             .ConfigureServices((context, services) =>
             {
-                throw new NotImplementedException("No service or window was registered.");
+                services.AddSingleton<LoginWindow>();
+                services.AddSingleton<LoginWindowViewModel>();
+                services.AddSingleton<MainWindow>();
+                services.AddSingleton<MainWindowViewModel>();
+
             }).Build();
 
         /// <summary>
@@ -43,6 +50,12 @@ namespace PassKeeper
         private void OnStartup(object sender, StartupEventArgs e)
         {
             _host.Start();
+
+            _host.Services.GetService<LoginWindowViewModel>();
+            _host.Services.GetService<MainWindowViewModel>();
+
+            LoginWindow loginWindow = _host.Services.GetRequiredService<LoginWindow>();
+            loginWindow.Show();
         }
 
         /// <summary>

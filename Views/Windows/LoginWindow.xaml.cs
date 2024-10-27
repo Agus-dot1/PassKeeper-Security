@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PassKeeper.ViewModels.Windows;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PassKeeper.Views.Windows
 {
@@ -22,6 +12,29 @@ namespace PassKeeper.Views.Windows
         public LoginWindow()
         {
             InitializeComponent();
+            DataContext = new LoginWindowViewModel();
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+                DragMove();
+        }
+
+        private void MasterKeyInput_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is LoginWindowViewModel viewModel)
+            {
+                viewModel.MasterKey = MasterKeyInput.Password;
+            }
+        }
+
+        private void RepeatKeyInput_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is LoginWindowViewModel viewModel)
+            {
+                viewModel.RepeatKey = RepeatKeyInput.Password;
+            }
         }
     }
 }
