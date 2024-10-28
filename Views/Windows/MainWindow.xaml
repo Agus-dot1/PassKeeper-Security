@@ -3,10 +3,46 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:local="clr-namespace:PassKeeper.Views.Windows"
+        d:DataContext="{d:DesignInstance local:MainWindow, IsDesignTimeCreatable=True}"
+        Width="1000"
+        Height="600"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="PassKeeper">
     <Grid>
+        <ui:TitleBar
+            x:Name="TitleBar"
+            Title="PassKeeper">   
+            <ui:TitleBar.Icon>
+                <ui:SymbolIcon Symbol="LockClosed12"/>
+            </ui:TitleBar.Icon>
+        </ui:TitleBar>
+
+        <ui:NavigationView
+            x:Name="RootNavigation"
+            Padding="42,0,42,0"
+            FrameMargin="0"
+            Margin="0,40,0,0"
+            IsBackButtonVisible="Collapsed"
+            IsPaneToggleVisible="True"
+            OpenPaneLength="200"
+            PaneDisplayMode="Left">
+            <ui:NavigationView.MenuItems>
+                <ui:NavigationViewItem TargetPageTag="AddPasswordPage" Content="Contraseñas" Icon="{ui:SymbolIcon Symbol=Key16}"/>
+                <ui:NavigationViewItem Content="Colecciones" Icon="{ui:SymbolIcon Symbol=Folder16}"/>
+            </ui:NavigationView.MenuItems>
+            <ui:NavigationView.ContentOverlay>
+                <Grid>
+                    <ui:SnackbarPresenter x:Name="SnackbarPresenter" />
+                </Grid>
+            </ui:NavigationView.ContentOverlay>
+            <ui:NavigationView.FooterMenuItems>
+                <ui:NavigationViewItem Content="Configuración" Icon="{ui:SymbolIcon Symbol=Settings24}"/>
+            </ui:NavigationView.FooterMenuItems>
+        </ui:NavigationView>
         
     </Grid>
 </Window>

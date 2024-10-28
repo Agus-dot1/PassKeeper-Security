@@ -8,6 +8,8 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
 using Wpf.Ui;
+using PassKeeper.Views.Pages;
+using PassKeeper.ViewModels;
 
 namespace PassKeeper
 {
@@ -26,10 +28,16 @@ namespace PassKeeper
             .ConfigureAppConfiguration(c => { c.SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location)); })
             .ConfigureServices((context, services) =>
             {
+                //Windows
                 services.AddSingleton<LoginWindow>();
                 services.AddSingleton<LoginWindowViewModel>();
                 services.AddSingleton<MainWindow>();
                 services.AddSingleton<MainWindowViewModel>();
+
+
+                //Pages
+                services.AddSingleton<AddPasswordPage>();
+                services.AddSingleton<AddPasswordViewModel>();
 
             }).Build();
 
@@ -54,8 +62,10 @@ namespace PassKeeper
             _host.Services.GetService<LoginWindowViewModel>();
             _host.Services.GetService<MainWindowViewModel>();
 
-            LoginWindow loginWindow = _host.Services.GetRequiredService<LoginWindow>();
-            loginWindow.Show();
+            MainWindow mainWindow = _host.Services.GetRequiredService<MainWindow>();
+            mainWindow.Show();
+
+
         }
 
         /// <summary>
