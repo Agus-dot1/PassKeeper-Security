@@ -103,10 +103,8 @@ namespace PassKeeper.ViewModels.Windows
         }
         public LoginWindowViewModel()
         {
-            if(_currentUser == null)
-            {
-                _currentUser = new UserModel(string.Empty, new MasterKeyModel());
-            }
+            _currentUser = new UserModel(string.Empty, new MasterKeyModel());
+            
             CreateMasterKeyCommand = new RelayCommand(CreateOrLogin, CanCreateOrLogin);
             CloseLoginCommand = new RelayCommand(CloseLogin);
             CheckIfMasterKeyExists();
@@ -162,7 +160,7 @@ namespace PassKeeper.ViewModels.Windows
                     SuccessMessageVisibility = true;
                     ErrorMessageVisibility = false;
 
-                    UserLoggedIn(true);
+                    UserLoggedIn();
 
                     await Task.Delay(2000);
 
@@ -202,7 +200,7 @@ namespace PassKeeper.ViewModels.Windows
                         SuccessMessageVisibility = true;
                         ErrorMessageVisibility = false;
 
-                        UserLoggedIn(true);
+                        UserLoggedIn();
 
                         await Task.Delay(2000);
 
@@ -231,9 +229,9 @@ namespace PassKeeper.ViewModels.Windows
             Application.Current.Windows.OfType<LoginWindow>().FirstOrDefault()?.Close();
         }
 
-        public bool UserLoggedIn(bool userLoggedIn)
+        public bool UserLoggedIn()
         {
-            return userLoggedIn;
+            return true;
         }
     }
 }

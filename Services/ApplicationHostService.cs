@@ -29,14 +29,7 @@ namespace PassKeeper.Services
         /// <param name="cancellationToken">Indicates that the start process has been aborted.</param>
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            _loginWindowViewModel = _serviceProvider.GetRequiredService<LoginWindowViewModel>();
-            LoginWindow loginWindow = _serviceProvider.GetRequiredService<LoginWindow>();
-            loginWindow.Show();
-
-            if(_loginWindowViewModel.UserLoggedIn(true))
-            {
-                await HandleActivationAsync();
-            }
+             await HandleActivationAsync();
         }
 
 

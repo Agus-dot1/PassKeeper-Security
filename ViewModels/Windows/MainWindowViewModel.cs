@@ -29,9 +29,9 @@ namespace PassKeeper.ViewModels.Windows
         };
 
         [ObservableProperty]
-        private ObservableCollection<Wpf.Ui.Controls.MenuItem> _trayMenuItems = new()
+        private ObservableCollection<MenuItem> _trayMenuItems = new()
         {
-            new Wpf.Ui.Controls.MenuItem { Header = "Contraseñas", Tag = "tray_Contraseñas" }
+            new MenuItem { Header = "Contraseñas", Tag = "tray_Contraseñas" }
         };
     }
 }

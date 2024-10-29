@@ -76,14 +76,10 @@ namespace PassKeeper
         private void OnStartup(object sender, StartupEventArgs e)
         {
             _host.Services.GetService<LoginWindowViewModel>();
-
             LoginWindow loginWindow = _host.Services.GetRequiredService<LoginWindow>();
-            
-            loginWindow.Show();
+            loginWindow.ShowDialog();
 
             _host.Start();
-
-
         }
 
         /// <summary>
