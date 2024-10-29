@@ -10,6 +10,7 @@ using System.Windows.Threading;
 using Wpf.Ui;
 using PassKeeper.Views.Pages;
 using PassKeeper.ViewModels;
+using PassKeeper.Services;
 
 namespace PassKeeper
 {
@@ -28,11 +29,28 @@ namespace PassKeeper
             .ConfigureAppConfiguration(c => { c.SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location)); })
             .ConfigureServices((context, services) =>
             {
+                services.AddHostedService<ApplicationHostService>();
+
+                // Page resolver service
+                services.AddSingleton<IPageService, PageService>();
+
+                // Theme manipulation
+                services.AddSingleton<IThemeService, ThemeService>();
+
+                // TaskBar manipulation
+                services.AddSingleton<ITaskBarService, TaskBarService>();
+
+                // Service containing navigation, same as INavigationWindow... but without window
+                services.AddSingleton<INavigationService, NavigationService>();
+
+                // Main window with navigation
+                services.AddSingleton<MainWindow>();
+                services.AddSingleton<INavigationWindow>(sp => sp.GetRequiredService<MainWindow>()); // Registro como INavigationWindow
+                services.AddSingleton<MainWindowViewModel>();
+
                 //Windows
                 services.AddSingleton<LoginWindow>();
                 services.AddSingleton<LoginWindowViewModel>();
-                services.AddSingleton<MainWindow>();
-                services.AddSingleton<MainWindowViewModel>();
 
 
                 //Pages
@@ -46,7 +64,7 @@ namespace PassKeeper
         /// </summary>
         /// <typeparam name="T">Type of the service to get.</typeparam>
         /// <returns>Instance of the service or <see langword="null"/>.</returns>
-        public static T GetService<T>()
+        public static T? GetService<T>()
             where T : class
         {
             return _host.Services.GetService(typeof(T)) as T;
@@ -57,13 +75,13 @@ namespace PassKeeper
         /// </summary>
         private void OnStartup(object sender, StartupEventArgs e)
         {
-            _host.Start();
-
             _host.Services.GetService<LoginWindowViewModel>();
-            _host.Services.GetService<MainWindowViewModel>();
 
-            MainWindow mainWindow = _host.Services.GetRequiredService<MainWindow>();
-            mainWindow.Show();
+            LoginWindow loginWindow = _host.Services.GetRequiredService<LoginWindow>();
+            
+            loginWindow.Show();
+
+            _host.Start();
 
 
         }

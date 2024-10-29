@@ -6,9 +6,11 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:local="clr-namespace:PassKeeper.Views.Windows"
         d:DataContext="{d:DesignInstance local:MainWindow, IsDesignTimeCreatable=True}"
-        Width="1000"
+        Width="900"
         Height="600"
-        WindowStartupLocation="CenterScreen"
+        MinWidth="900"
+        MinHeight="600"
+    WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         mc:Ignorable="d"
         Title="PassKeeper">
@@ -28,21 +30,15 @@
             Margin="0,40,0,0"
             IsBackButtonVisible="Collapsed"
             IsPaneToggleVisible="True"
-            OpenPaneLength="200"
-            PaneDisplayMode="Left">
-            <ui:NavigationView.MenuItems>
-                <ui:NavigationViewItem TargetPageTag="AddPasswordPage" Content="Contraseñas" Icon="{ui:SymbolIcon Symbol=Key16}"/>
-                <ui:NavigationViewItem Content="Colecciones" Icon="{ui:SymbolIcon Symbol=Folder16}"/>
-            </ui:NavigationView.MenuItems>
+            OpenPaneLength="160"
+            PaneDisplayMode="Left"
+            MenuItemsSource="{Binding ViewModel.MenuItems, Mode=OneWay}"
+            FooterMenuItemsSource="{Binding ViewModel.FooterMenuItems, Mode=OneWay}">
             <ui:NavigationView.ContentOverlay>
                 <Grid>
                     <ui:SnackbarPresenter x:Name="SnackbarPresenter" />
                 </Grid>
             </ui:NavigationView.ContentOverlay>
-            <ui:NavigationView.FooterMenuItems>
-                <ui:NavigationViewItem Content="Configuración" Icon="{ui:SymbolIcon Symbol=Settings24}"/>
-            </ui:NavigationView.FooterMenuItems>
         </ui:NavigationView>
-        
     </Grid>
 </Window>

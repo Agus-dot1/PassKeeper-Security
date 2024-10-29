@@ -3,25 +3,27 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using PassKeeper.Models;
 using PassKeeper.Views.Windows;
+using PassKeeper.Services;
 using System.IO;
 using System.Windows;
+using Wpf.Ui;
 
 namespace PassKeeper.ViewModels.Windows
 {
     public class LoginWindowViewModel : ObservableObject
     {
         private UserModel _currentUser;
-        private string _masterKey;
-        private string _repeatMKey;
+
+        private string? _masterKey;
+        private string? _repeatMKey;
         public bool _isNewUser;
-        private string _createButtonContent;
-        private string _errorMessage;
-        private string _successMessage;
+        private string? _createButtonContent;
+        private string? _errorMessage;
+        private string? _successMessage;
         private bool _errorMessageVisibility;
         private bool _successMessageVisibility;
 
-
-        public string CreateButtonContent
+        public string? CreateButtonContent
         {
             get { return _createButtonContent; }
             set
@@ -30,7 +32,7 @@ namespace PassKeeper.ViewModels.Windows
                 OnPropertyChanged(nameof(CreateButtonContent));
             }
         }
-        public string MasterKey
+        public string? MasterKey
         {
             get { return _masterKey; }
             set
@@ -39,7 +41,7 @@ namespace PassKeeper.ViewModels.Windows
                 OnPropertyChanged(nameof(MasterKey));
             }
         }
-        public string RepeatKey
+        public string? RepeatKey
         {
             get { return _repeatMKey; }
             set
@@ -49,7 +51,7 @@ namespace PassKeeper.ViewModels.Windows
             }
         }
 
-        public string ErrorMessage
+        public string? ErrorMessage
         {
             get { return _errorMessage; }
             set
@@ -59,7 +61,7 @@ namespace PassKeeper.ViewModels.Windows
             }
         }
 
-        public string SuccessMessage
+        public string? SuccessMessage
         {
             get { return _successMessage; }
             set
@@ -109,6 +111,7 @@ namespace PassKeeper.ViewModels.Windows
             CloseLoginCommand = new RelayCommand(CloseLogin);
             CheckIfMasterKeyExists();
             CreateButtonContent = IsNewUser ? "Crear" : "Ingresar";
+
         }
 
         public RelayCommand CreateMasterKeyCommand { get; private set; }
@@ -159,10 +162,12 @@ namespace PassKeeper.ViewModels.Windows
                     SuccessMessageVisibility = true;
                     ErrorMessageVisibility = false;
 
+                    UserLoggedIn(true);
+
                     await Task.Delay(2000);
 
-                    MainWindow mainWindow = new MainWindow();
-                    mainWindow.Show();
+                    MainWindow? mainWindow = App.GetService<MainWindow>();
+                    mainWindow?.Show();
 
                     Application.Current.Windows.OfType<LoginWindow>().FirstOrDefault()?.Close();
                     MessageBox.Show($"La base de datos fue guardada en {_currentUser.FilePath}");
@@ -179,10 +184,10 @@ namespace PassKeeper.ViewModels.Windows
             {
                 if (!string.IsNullOrEmpty(_currentUser.FilePath) && File.Exists(_currentUser.FilePath))
                 {
-                    string storedHash = File.ReadLines(_currentUser.FilePath).FirstOrDefault();
-                    _currentUser.MasterKey.InitializeHashedKey(storedHash);
+                    string? storedHash = File.ReadLines(_currentUser.FilePath).FirstOrDefault();
+                    _currentUser.MasterKey.InitializeHashedKey(storedHash ?? string.Empty);
 
-                    bool isCorrect = _currentUser.MasterKey.CheckMasterKey(_masterKey);
+                    bool isCorrect = _currentUser.MasterKey.CheckMasterKey(_masterKey ?? string.Empty);
 
                     if (!isCorrect)
                     {
@@ -196,10 +201,13 @@ namespace PassKeeper.ViewModels.Windows
                         SuccessMessage = "Clave maestra correcta.";
                         SuccessMessageVisibility = true;
                         ErrorMessageVisibility = false;
+
+                        UserLoggedIn(true);
+
                         await Task.Delay(2000);
 
-                        MainWindow mainWindow = new MainWindow();
-                        mainWindow.Show();
+                        MainWindow? mainWindow = App.GetService<MainWindow>();
+                        mainWindow?.Show();
 
                         Application.Current.Windows.OfType<LoginWindow>().FirstOrDefault()?.Close();
                     }
@@ -221,6 +229,11 @@ namespace PassKeeper.ViewModels.Windows
         private void CloseLogin()
         {
             Application.Current.Windows.OfType<LoginWindow>().FirstOrDefault()?.Close();
+        }
+
+        public bool UserLoggedIn(bool userLoggedIn)
+        {
+            return userLoggedIn;
         }
     }
 }
