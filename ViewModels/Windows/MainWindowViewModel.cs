@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using PassKeeper.Views.Pages;
 using System.Collections.ObjectModel;
 using Wpf.Ui.Controls;
 
@@ -27,6 +28,19 @@ namespace PassKeeper.ViewModels.Windows
                 TargetPageType = typeof(Views.Pages.AddPasswordPage)
             }
         };
+
+        private object _selectedPage;
+        public object SelectedPage
+        {
+            get => _selectedPage;
+            set => SetProperty(ref _selectedPage, value);
+        }
+
+        public MainWindowViewModel()
+        {
+            SelectedPage = new AddPasswordPage();
+        }
+
 
         [ObservableProperty]
         private ObservableCollection<MenuItem> _trayMenuItems = new()

@@ -1,4 +1,5 @@
 ﻿using PassKeeper.ViewModels.Windows;
+using PassKeeper.Views.Pages;
 using System.Windows;
 using Wpf.Ui;
 using Wpf.Ui.Appearance;
@@ -21,10 +22,16 @@ namespace PassKeeper.Views.Windows
             DataContext = this;
 
             InitializeComponent();
+            Loaded += OnLoaded;
             SetPageService(pageService);
 
             navigationService.SetNavigationControl(RootNavigation);
 
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            RootNavigation.Navigate(typeof(AddPasswordPage));
         }
 
         public INavigationView GetNavigation() => RootNavigation;
