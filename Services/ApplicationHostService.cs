@@ -55,7 +55,7 @@ namespace PassKeeper.Services
                 )!;
                 _navigationWindow!.ShowWindow();
 
-                _navigationWindow.Navigate(typeof(Views.Pages.AddPasswordPage));
+                _navigationWindow.Navigate(typeof(PasswordsPage));
             }
 
             await Task.CompletedTask;

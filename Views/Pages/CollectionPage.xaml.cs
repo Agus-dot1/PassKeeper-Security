@@ -12,19 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using PassKeeper.ViewModels;
 
 namespace PassKeeper.Views.Pages
 {
     /// <summary>
-    /// Lógica de interacción para AddPassword.xaml
+    /// Lógica de interacción para CollectionPage.xaml
     /// </summary>
-    public partial class AddPasswordPage : UserControl
+    public partial class CollectionPage : Page
     {
-        public AddPasswordPage()
+        public CollectionPage()
         {
             InitializeComponent();
-            DataContext = new AddPasswordViewModel();
         }
     }
 }

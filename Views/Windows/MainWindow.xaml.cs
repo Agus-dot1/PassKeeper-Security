@@ -21,6 +21,8 @@ namespace PassKeeper.Views.Windows
             ViewModel = viewModel;
             DataContext = this;
 
+            SystemThemeWatcher.Watch(this);
+
             InitializeComponent();
             Loaded += OnLoaded;
             SetPageService(pageService);
@@ -31,7 +33,7 @@ namespace PassKeeper.Views.Windows
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            RootNavigation.Navigate(typeof(AddPasswordPage));
+            RootNavigation.Navigate(typeof(PasswordsPage));
         }
 
         public INavigationView GetNavigation() => RootNavigation;

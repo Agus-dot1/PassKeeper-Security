@@ -14,7 +14,13 @@ namespace PassKeeper.ViewModels.Windows
             {
                 Content = "Contraseñas",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Key16 },
-                TargetPageType = typeof(Views.Pages.AddPasswordPage)
+                TargetPageType = typeof(PasswordsPage)
+            },
+            new NavigationViewItem()
+            {
+                Content = "Colecciones",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.Folder16 },
+                TargetPageType = typeof(CollectionPage)
             }
         };
 
@@ -23,24 +29,11 @@ namespace PassKeeper.ViewModels.Windows
         {
             new NavigationViewItem()
             {
-                Content = "Add",
-                Icon = new SymbolIcon { Symbol = SymbolRegular.Add12 },
-                TargetPageType = typeof(Views.Pages.AddPasswordPage)
+                Content = "Configuracion",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.Settings24 },
+                TargetPageType = typeof(SettingsPage)
             }
         };
-
-        private object _selectedPage;
-        public object SelectedPage
-        {
-            get => _selectedPage;
-            set => SetProperty(ref _selectedPage, value);
-        }
-
-        public MainWindowViewModel()
-        {
-            SelectedPage = new AddPasswordPage();
-        }
-
 
         [ObservableProperty]
         private ObservableCollection<MenuItem> _trayMenuItems = new()
