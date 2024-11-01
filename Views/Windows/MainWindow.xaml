@@ -1,25 +1,41 @@
-﻿<Window x:Class="PassKeeper.Views.Windows.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-        xmlns:local="clr-namespace:PassKeeper.Views.Windows"
-        d:DataContext="{d:DesignInstance local:MainWindow, IsDesignTimeCreatable=True}"
-        Width="900"
-        Height="600"
-        MinWidth="900"
-        MinHeight="600"
-    WindowStartupLocation="CenterScreen"
-        WindowStyle="None"
-        mc:Ignorable="d"
-        Title="PassKeeper">
+﻿<ui:FluentWindow x:Class="PassKeeper.Views.Windows.MainWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                 xmlns:local="clr-namespace:PassKeeper.Views.Windows"
+                 d:DataContext="{d:DesignInstance local:MainWindow, IsDesignTimeCreatable=True}"
+                 Width="1100"
+                 Height="800"
+                 MinWidth="1100"
+                 MinHeight="800"
+                 WindowStartupLocation="CenterScreen"
+                 WindowStyle="None"
+                 WindowBackdropType="Mica"
+                 ExtendsContentIntoTitleBar="True"
+                 mc:Ignorable="d"
+                 Title="PassKeeper">
+    <Window.Resources>
+        <DataTemplate x:Key="NavigationItemTemplate">
+            <StackPanel Orientation="Horizontal">
+                <ui:SymbolIcon Symbol="{Binding Icon}" />
+                <TextBlock Text="{Binding Content}" FontSize="24" Margin="5,0" VerticalAlignment="Center"/>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
     <Grid>
         <ui:TitleBar
+            Foreground="#378bf3"
             x:Name="TitleBar"
-            Title="PassKeeper">   
+            FontSize="24"
+            FontFamily="Onest"
+            FontWeight="Bold"
+            Height="50"
+            Title="PassKeeper"
+            >
             <ui:TitleBar.Icon>
-                <ui:SymbolIcon Symbol="LockClosed12"/>
+                <ui:SymbolIcon Foreground="#378bf3" Symbol="LockClosed12" Margin="0,-4,0,-2" Width="20"/>
             </ui:TitleBar.Icon>
         </ui:TitleBar>
 
@@ -27,10 +43,10 @@
             x:Name="RootNavigation"
             Padding="42,0,42,0"
             FrameMargin="0"
-            Margin="0,40,0,0"
+            Margin="0,50,0,0"
             IsBackButtonVisible="Collapsed"
             IsPaneToggleVisible="True"
-            OpenPaneLength="160"
+            OpenPaneLength="310"
             PaneDisplayMode="Left"
             MenuItemsSource="{Binding ViewModel.MenuItems, Mode=OneWay}"
             FooterMenuItemsSource="{Binding ViewModel.FooterMenuItems, Mode=OneWay}">
@@ -41,4 +57,4 @@
             </ui:NavigationView.ContentOverlay>
         </ui:NavigationView>
     </Grid>
-</Window>
+</ui:FluentWindow>

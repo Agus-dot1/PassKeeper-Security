@@ -13,7 +13,6 @@ namespace PassKeeper.ViewModels.Windows
     public class LoginWindowViewModel : ObservableObject
     {
         private UserModel _currentUser;
-
         private string? _masterKey;
         private string? _repeatMKey;
         public bool _isNewUser;

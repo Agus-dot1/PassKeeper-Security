@@ -18,6 +18,8 @@ namespace PassKeeper.Views.Windows
             INavigationService navigationService,
             IPageService pageService)
         {
+            this.MaxHeight = SystemParameters.WorkArea.Height;
+
             ViewModel = viewModel;
             DataContext = this;
 

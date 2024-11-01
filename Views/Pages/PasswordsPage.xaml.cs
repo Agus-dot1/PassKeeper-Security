@@ -10,10 +10,8 @@ namespace PassKeeper.Views.Pages
         public PasswordsPage(PasswordViewModel viewModel)
         {
             ViewModel = viewModel;
-            DataContext = this;
+            DataContext = ViewModel;
             InitializeComponent();
         }
-
-       
     }
 }

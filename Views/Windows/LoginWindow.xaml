@@ -30,11 +30,11 @@
 
             <!-- Vista para Nuevo Usuario -->
             <StackPanel Grid.Row="0" Margin="0,20,0,0" Visibility="{Binding IsNewUser, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <ui:SymbolIcon Symbol="LockShield48" FontSize="120" Foreground="#517ff6"  Margin="0,0,0,10"/>
+                <ui:SymbolIcon Symbol="LockShield48" FontSize="120" Foreground="#378bf3"  Margin="0,0,0,10"/>
                 <TextBlock FontSize="32" FontWeight="Bold"  HorizontalAlignment="Center">
                     <TextBlock.Inlines>
                         <Run Text="Creá tu" Foreground="#444444"></Run>
-                        <Run Text="clave maestra" Foreground="#517ff6" />
+                        <Run Text="clave maestra" Foreground="#378bf3" />
                     </TextBlock.Inlines>
                 </TextBlock>
                 <TextBlock 
@@ -48,7 +48,7 @@
 
             <!-- Vista para Ingreso de Usuario -->
             <StackPanel Grid.Row="0" Margin="0,20,0,0" Visibility="{Binding IsNewUser, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
-                <TextBlock FontSize="32" FontWeight="Bold"  HorizontalAlignment="Center" Foreground="#517ff6">
+                <TextBlock FontSize="32" FontWeight="Bold"  HorizontalAlignment="Center" Foreground="#378bf3">
          Ingrese su clave maestra
                 </TextBlock>
             </StackPanel>

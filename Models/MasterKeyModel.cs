@@ -9,7 +9,7 @@ namespace PassKeeper.Models
 {
     public class MasterKeyModel
     {
-        public string HashedKey { get; private set; }
+        public string? HashedKey { get; private set; }
 
         public void SetMasterKey(string MasterKeyText)
         {
@@ -25,13 +25,10 @@ namespace PassKeeper.Models
             return HashedKey == Hash(MasterKeyText);
         }
 
-        private string Hash(string MasterKeyText)
+        private static string Hash(string MasterKeyText)
         {
-            using (var sha256 = SHA256.Create())
-            {
-                byte[] data = sha256.ComputeHash(Encoding.UTF8.GetBytes(MasterKeyText));
-                return BitConverter.ToString(data).Replace("-", "").ToLower();
-            }
+            byte[] data = SHA256.HashData(Encoding.UTF8.GetBytes(MasterKeyText));
+            return BitConverter.ToString(data).Replace("-", "").ToLower();
         }
     }
 }
