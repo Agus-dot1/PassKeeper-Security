@@ -19,6 +19,7 @@ namespace PassKeeper.ViewModels
     public partial class AddPasswordViewModel : ObservableObject
     {
         [ObservableProperty] public string? generatedPassword;
+        [ObservableProperty] public int passwordStrength;
         [ObservableProperty] public int id;
         [ObservableProperty] public string? name;
         [ObservableProperty] public string? username;
@@ -26,9 +27,11 @@ namespace PassKeeper.ViewModels
         [ObservableProperty] public string? note;
         [ObservableProperty] public int selectedIcon;
         [ObservableProperty] public string? icon;
+        
         public string FilePath { get; internal set; }
         public bool PasswordAdded { get; set; } = false;
 
+        
 
         public ObservableCollection<SymbolIcon> IconOptions { get; set; }
         public AddPasswordViewModel()
@@ -44,8 +47,9 @@ namespace PassKeeper.ViewModels
                 new SymbolIcon { Name = "Folder16", Symbol = SymbolRegular.Folder16 },
 
             };
-
             selectedIcon = 0;
+
+            
         }
 
         [RelayCommand] public void SavePassword()
@@ -99,6 +103,29 @@ namespace PassKeeper.ViewModels
         private void GeneratePassword()
         {
             GeneratedPassword = CreatePassword();
+        }
+
+        partial void OnGeneratedPasswordChanged(string? value)
+        {
+            CalculatePasswordStrength(value);
+        }
+
+        private void CalculatePasswordStrength(string? password)
+        {
+            if (string.IsNullOrEmpty(password))
+            {
+                PasswordStrength = 0;
+                return;
+            }
+
+            int score = 0;
+            if (password.Length >= 8) score += 25;
+            if (password.Any(char.IsUpper)) score += 25;
+            if (password.Any(char.IsLower)) score += 25;
+            if (password.Any(char.IsDigit)) score += 15;
+            if (password.Any(ch => !char.IsLetterOrDigit(ch))) score += 10;
+
+            PasswordStrength = score;
         }
 
         private static string CreatePassword()

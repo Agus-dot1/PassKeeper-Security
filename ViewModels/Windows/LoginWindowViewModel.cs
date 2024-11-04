@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using PassKeeper.Models;
 using PassKeeper.Views.Windows;
+using System.IO;
 using System.Windows;
 using Wpf.Ui.Appearance;
 
@@ -21,7 +22,8 @@ namespace PassKeeper.ViewModels.Windows
 
         public LoginWindowViewModel()
         {
-            currentUser = UserModel.LoadFromFile("C:/Users/agusn/Desktop/database.json") ?? new UserModel("C:/Users/agusn/Desktop/database.json", new MasterKeyModel());
+            string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "databases", "database.json");
+            currentUser = UserModel.LoadFromFile(dbPath) ?? new UserModel(new MasterKeyModel());
             IsNewUser = string.IsNullOrEmpty(currentUser.MasterKey.HashedKey);
             CreateButtonContent = IsNewUser ? "Crear" : "Ingresar";
         }
@@ -58,6 +60,8 @@ namespace PassKeeper.ViewModels.Windows
 
                     currentUser.SaveToFile();
 
+                    MainWindow? mainWindow = App.GetService<MainWindow>();
+                    mainWindow?.Show();
 
                     Application.Current.Windows.OfType<LoginWindow>().FirstOrDefault()?.Close();
                     MessageBox.Show($"La base de datos fue guardada en {currentUser.FilePath}");

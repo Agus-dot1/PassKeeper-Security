@@ -18,9 +18,12 @@ namespace PassKeeper.Models
         public ApplicationTheme CurrentTheme { get; set; } = ApplicationTheme.Light;
 
 
-        public UserModel(string filePath, MasterKeyModel masterKey)
+        public UserModel(MasterKeyModel masterKey)
         {
-            FilePath = filePath;
+            string dbDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "databases");
+            FilePath = Path.Combine(dbDirectory, "database.json");
+            Directory.CreateDirectory(dbDirectory);
+
             MasterKey = masterKey;
             Passwords = new ObservableCollection<Passwords>();
         }
@@ -32,7 +35,8 @@ namespace PassKeeper.Models
         }
         public void RemovePassword(Passwords password)
         {
-
+            Passwords.Remove(password);
+            SaveToFile();
         }
 
         public void SaveToFile()

@@ -82,7 +82,6 @@ namespace PassKeeper
         {
             _host.Start();
 
-
             _host.Services.GetService<LoginWindowViewModel>();
             LoginWindow loginWindow = _host.Services.GetRequiredService<LoginWindow>();
             loginWindow.ShowDialog();
