@@ -21,20 +21,5 @@ namespace PassKeeper.Views.Windows
                 DragMove();
         }
 
-        private void MasterKeyInput_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is LoginWindowViewModel viewModel)
-            {
-                viewModel.MasterKey = MasterKeyInput.Password;
-            }
-        }
-
-        private void RepeatKeyInput_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is LoginWindowViewModel viewModel)
-            {
-                viewModel.RepeatKey = RepeatKeyInput.Password;
-            }
-        }
     }
 }

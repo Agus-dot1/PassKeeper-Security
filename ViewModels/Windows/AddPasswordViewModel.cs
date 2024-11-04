@@ -12,20 +12,41 @@ using MessageBox = Wpf.Ui.Controls.MessageBox;
 using MessageBoxResult = Wpf.Ui.Controls.MessageBoxResult;
 using TextBlock = Wpf.Ui.Controls.TextBlock;
 using PassKeeper.Models;
+using System.Collections.ObjectModel;
 
 namespace PassKeeper.ViewModels
 {
     public partial class AddPasswordViewModel : ObservableObject
     {
         [ObservableProperty] public string? generatedPassword;
+        [ObservableProperty] public int id;
         [ObservableProperty] public string? name;
         [ObservableProperty] public string? username;
         [ObservableProperty] public string? url;
         [ObservableProperty] public string? note;
+        [ObservableProperty] public int selectedIcon;
         [ObservableProperty] public string? icon;
+        public string FilePath { get; internal set; }
         public bool PasswordAdded { get; set; } = false;
-        
 
+
+        public ObservableCollection<SymbolIcon> IconOptions { get; set; }
+        public AddPasswordViewModel()
+        {
+            IconOptions = new ObservableCollection<SymbolIcon>
+            {
+                new SymbolIcon { Name = "Key16", Symbol = SymbolRegular.Key16 },
+                new SymbolIcon { Name = "Person16", Symbol = SymbolRegular.Person16 },
+                new SymbolIcon { Name = "Heart12", Symbol = SymbolRegular.Heart12 },
+                new SymbolIcon { Name = "BuildingBank16", Symbol = SymbolRegular.BuildingBank16 },
+                new SymbolIcon { Name = "Games16", Symbol = SymbolRegular.Games16 },
+                new SymbolIcon { Name = "Important12", Symbol = SymbolRegular.Important12 },
+                new SymbolIcon { Name = "Folder16", Symbol = SymbolRegular.Folder16 },
+
+            };
+
+            selectedIcon = 0;
+        }
 
         [RelayCommand] public void SavePassword()
         {
@@ -67,8 +88,7 @@ namespace PassKeeper.ViewModels
                     }
                 }
             };
-
-
+            Icon = IconOptions[SelectedIcon].Name;
             PasswordAdded = true;
             messageBox2.ShowDialogAsync();
             Application.Current.Windows.OfType<AddPasswordWindow>().FirstOrDefault()?.Close();

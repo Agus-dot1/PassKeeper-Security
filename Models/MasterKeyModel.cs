@@ -9,7 +9,7 @@ namespace PassKeeper.Models
 {
     public class MasterKeyModel
     {
-        public string? HashedKey { get; private set; }
+        public string? HashedKey { get; set; }
 
         public void SetMasterKey(string MasterKeyText)
         {

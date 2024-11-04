@@ -16,7 +16,6 @@ namespace PassKeeper.Services
     {
         private readonly IServiceProvider _serviceProvider;
         private INavigationWindow? _navigationWindow;
-        private LoginWindowViewModel _loginWindowViewModel;
 
         public ApplicationHostService(IServiceProvider serviceProvider)
         {
@@ -48,12 +47,12 @@ namespace PassKeeper.Services
         /// </summary>
         private async Task HandleActivationAsync()
         {
-            if (!Application.Current.Windows.OfType<MainWindow>().Any())
+            if (Application.Current.Windows.OfType<Window>().Any())
             {
                 _navigationWindow = (
                     _serviceProvider.GetService(typeof(INavigationWindow)) as INavigationWindow
                 )!;
-                _navigationWindow!.ShowWindow();
+                _navigationWindow.ShowWindow();
 
                 _navigationWindow.Navigate(typeof(PasswordsPage));
             }

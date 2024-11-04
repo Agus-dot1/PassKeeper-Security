@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PassKeeper.ViewModels.Windows;
+using PassKeeper.Views.Windows;
 using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
 
@@ -40,26 +42,27 @@ namespace PassKeeper.ViewModels.Pages
         [RelayCommand]
         private void OnChangeTheme(string parameter)
         {
+            ApplicationTheme newTheme;
+
             switch (parameter)
             {
                 case "theme_light":
-                    if (CurrentTheme == ApplicationTheme.Light)
-                        break;
-
-                    ApplicationThemeManager.Apply(ApplicationTheme.Light);
-                    CurrentTheme = ApplicationTheme.Light;
-
+                    newTheme = ApplicationTheme.Light;
                     break;
-
+                case "theme_dark":
+                    newTheme = ApplicationTheme.Dark;
+                    break;
                 default:
-                    if (CurrentTheme == ApplicationTheme.Dark)
-                        break;
-
-                    ApplicationThemeManager.Apply(ApplicationTheme.Dark);
-                    CurrentTheme = ApplicationTheme.Dark;
-
-                    break;
+                    return; 
             }
+            ApplicationThemeManager.Apply(newTheme);
+            CurrentTheme = newTheme; 
+
+            LoginWindowViewModel loginWindowViewModel = new LoginWindowViewModel();
+            loginWindowViewModel.currentUser.CurrentTheme = newTheme;
+            loginWindowViewModel.currentUser.SaveToFile();
         }
+
+
     }
 }
