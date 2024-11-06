@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using PassKeeper.Views.Pages;
 using System.Collections.ObjectModel;
-using System.Windows;
 using Wpf.Ui.Controls;
 
 namespace PassKeeper.ViewModels.Windows

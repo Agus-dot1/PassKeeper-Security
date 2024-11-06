@@ -1,7 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Collections;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using PassKeeper.ViewModels.Windows;
+﻿using Microsoft.Extensions.Hosting;
 using PassKeeper.Views.Pages;
 using PassKeeper.Views.Windows;
 using System.Windows;
@@ -16,6 +13,7 @@ namespace PassKeeper.Services
     {
         private readonly IServiceProvider _serviceProvider;
         private INavigationWindow? _navigationWindow;
+        private LoginWindow _loginWindow;
 
         public ApplicationHostService(IServiceProvider serviceProvider)
         {
@@ -52,6 +50,9 @@ namespace PassKeeper.Services
                 _navigationWindow = (
                     _serviceProvider.GetService(typeof(INavigationWindow)) as INavigationWindow
                 )!;
+
+
+
                 _navigationWindow.ShowWindow();
 
                 _navigationWindow.Navigate(typeof(PasswordsPage));

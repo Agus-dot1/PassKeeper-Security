@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PassKeeper.ViewModels.Windows;
-using PassKeeper.Views.Windows;
 using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
 

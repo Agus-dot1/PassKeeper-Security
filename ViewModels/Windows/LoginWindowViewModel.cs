@@ -4,7 +4,6 @@ using PassKeeper.Models;
 using PassKeeper.Views.Windows;
 using System.IO;
 using System.Windows;
-using Wpf.Ui.Appearance;
 
 namespace PassKeeper.ViewModels.Windows
 {
@@ -63,7 +62,7 @@ namespace PassKeeper.ViewModels.Windows
                     MainWindow? mainWindow = App.GetService<MainWindow>();
                     mainWindow?.Show();
 
-                    Application.Current.Windows.OfType<LoginWindow>().FirstOrDefault()?.Close();
+                    OnExit();
                     MessageBox.Show($"La base de datos fue guardada en {currentUser.FilePath}");
                 }
                 catch (Exception ex)
@@ -93,6 +92,8 @@ namespace PassKeeper.ViewModels.Windows
 
                     MainWindow? mainWindow = App.GetService<MainWindow>();
                     mainWindow?.Show();
+
+                    OnExit();
                 }
                 else if (string.IsNullOrWhiteSpace(MasterKey))
                 {
@@ -103,9 +104,17 @@ namespace PassKeeper.ViewModels.Windows
                 }
             }
         }
-        [RelayCommand]
-        private static void CloseLogin()
+
+        private async void OnExit()
         {
+            await Task.Delay(500);
+            Application.Current.Windows.OfType<LoginWindow>().FirstOrDefault()?.Close();
+        }
+
+        [RelayCommand]
+        private async static Task CloseLogin()
+        {
+            await Task.Delay(500);
             Application.Current.Windows.OfType<LoginWindow>().FirstOrDefault()?.Close();
         }
     }

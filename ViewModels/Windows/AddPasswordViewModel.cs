@@ -1,18 +1,15 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using PassKeeper.Views.Windows;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using PassKeeper.Views.Windows;
 using Wpf.Ui.Controls;
 using MessageBox = Wpf.Ui.Controls.MessageBox;
 using MessageBoxResult = Wpf.Ui.Controls.MessageBoxResult;
 using TextBlock = Wpf.Ui.Controls.TextBlock;
-using PassKeeper.Models;
-using System.Collections.ObjectModel;
 
 namespace PassKeeper.ViewModels
 {
@@ -48,13 +45,11 @@ namespace PassKeeper.ViewModels
 
             };
             selectedIcon = 0;
-
-            
         }
 
         [RelayCommand] public void SavePassword()
         {
-            if (string.IsNullOrEmpty(Name))
+            if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(GeneratedPassword))
             {
                 var messageBox = new MessageBox
                 {
@@ -66,7 +61,7 @@ namespace PassKeeper.ViewModels
                         {
                             new TextBlock
                             {
-                                Text = "Todos los campos son obligatorios",
+                                Text = "Usuario y contraseña son requeridos",
                                 VerticalAlignment = VerticalAlignment.Center
                             }
                         }
@@ -132,12 +127,11 @@ namespace PassKeeper.ViewModels
         {
             const string letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
             const string numbers = "0123456789";
-            const string specialChars = "!@#$%^&*()";
+            const string specialChars = "!@#$%^&*()-+?_=,<>/.;{}[]";
 
-            StringBuilder charPool = new StringBuilder(letters + numbers);
-            charPool.Append(specialChars);
-
+            StringBuilder charPool = new StringBuilder(letters + numbers + specialChars);
             StringBuilder password = new StringBuilder();
+
             Random random = new Random();
 
             for (int i = 0; i < 20; i++)
@@ -150,7 +144,7 @@ namespace PassKeeper.ViewModels
 
 
         [RelayCommand]
-        private static void Cancel()
+        public void Cancel()
         {
             var messageBox = new MessageBox
             {
