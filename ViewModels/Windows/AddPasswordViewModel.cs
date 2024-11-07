@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PassKeeper.Helpers;
 using PassKeeper.Views.Windows;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -7,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Wpf.Ui.Controls;
+using Wpf.Ui.Extensions;
 using MessageBox = Wpf.Ui.Controls.MessageBox;
 using MessageBoxResult = Wpf.Ui.Controls.MessageBoxResult;
 using TextBlock = Wpf.Ui.Controls.TextBlock;
@@ -24,26 +26,14 @@ namespace PassKeeper.ViewModels
         [ObservableProperty] public string? note;
         [ObservableProperty] public int selectedIcon;
         [ObservableProperty] public string? icon;
-        
+
+        public ObservableCollection<SymbolIcon> IconOptions { get; set; } = Icons.IconOptions;
+
         public string FilePath { get; internal set; }
         public bool PasswordAdded { get; set; } = false;
-
         
-
-        public ObservableCollection<SymbolIcon> IconOptions { get; set; }
         public AddPasswordViewModel()
         {
-            IconOptions = new ObservableCollection<SymbolIcon>
-            {
-                new SymbolIcon { Name = "Key16", Symbol = SymbolRegular.Key16 },
-                new SymbolIcon { Name = "Person16", Symbol = SymbolRegular.Person16 },
-                new SymbolIcon { Name = "Heart12", Symbol = SymbolRegular.Heart12 },
-                new SymbolIcon { Name = "BuildingBank16", Symbol = SymbolRegular.BuildingBank16 },
-                new SymbolIcon { Name = "Games16", Symbol = SymbolRegular.Games16 },
-                new SymbolIcon { Name = "Important12", Symbol = SymbolRegular.Important12 },
-                new SymbolIcon { Name = "Folder16", Symbol = SymbolRegular.Folder16 },
-
-            };
             selectedIcon = 0;
         }
 

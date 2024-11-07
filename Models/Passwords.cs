@@ -3,7 +3,7 @@
     public class Passwords
     {
         public int Id { get; set; }
-        public string? Icon { get; set; }
+        public string? Icon { get; set; }         // cambiar logica de asignacion de iconos.
         public string? Name { get; set; }
         public string? Username { get; set; }
         public string? Password { get; set; }
