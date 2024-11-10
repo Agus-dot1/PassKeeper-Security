@@ -46,7 +46,7 @@
 - **AES Encryption**: Ensures password data is securely encrypted and stored locally.
 ## Roadmap
 
-- **0.5.0** - Initial Version
+- **1.0.0** - Initial Version
   - Account-free password management
   - Basic encryption using AES and local storage
   - Manual and auto-generated password options
