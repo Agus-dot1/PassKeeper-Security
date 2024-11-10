@@ -5,12 +5,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PassKeeper.Views.Windows"
-        xmlns:conv="clr-namespace:PassKeeper.Helpers" xmlns:windows="clr-namespace:PassKeeper.ViewModels.Windows" d:DataContext="{d:DesignInstance Type=windows:LoginWindowViewModel}"
+        xmlns:conv="clr-namespace:PassKeeper.Helpers" 
+        xmlns:windows="clr-namespace:PassKeeper.ViewModels.Windows" 
+        d:DataContext="{d:DesignInstance Type=windows:LoginWindowViewModel}"
         mc:Ignorable="d"
         WindowStyle="None"
-        WindowStartupLocation="CenterScreen"
-        Background="Transparent"
         AllowsTransparency="True"
+        Background="Transparent"
+        WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         MouseDown="Window_MouseDown"
         Title="LoginWindow" Height="580" Width="560">
@@ -18,68 +20,105 @@
         <conv:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <conv:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter"/>
     </Window.Resources>
-    <Border CornerRadius="10" Background="white">
-        <Grid Margin="50">
+    <Border CornerRadius="10" BorderBrush="#384150" BorderThickness="1" Background="#202936">
+        <Grid Margin="30">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <ui:SymbolIcon Margin="416,-41,10,304" Foreground="#444444" Width="40" FontSize="30" Height="40" Symbol="Dismiss12"></ui:SymbolIcon>
-            <ui:Button Margin="426,-31,14,314" Background="Transparent" Cursor="Hand" Command="{Binding CloseLoginCommand}" BorderThickness="0" FontSize="20" Height="20" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-
+            <ui:Button Command="{Binding CloseLoginCommand}" Cursor="Hand" HorizontalAlignment="Right" BorderThickness="0" FontSize="20" Background="Transparent">
+                <ui:Button.Icon>
+                    <ui:SymbolIcon Foreground="#f2f2f2" Symbol="Dismiss12"></ui:SymbolIcon>
+                </ui:Button.Icon>
+            </ui:Button>
+            
+            
             <!-- Vista para Nuevo Usuario -->
-            <StackPanel Grid.Row="0" Margin="0,20,0,0" Visibility="{Binding IsNewUser, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <ui:SymbolIcon Symbol="LockShield48" FontSize="120" Foreground="#378bf3"  Margin="0,0,0,10"/>
+            <StackPanel Grid.Row="1" Visibility="{Binding IsNewUser, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <ui:SymbolIcon Symbol="LockShield48" FontSize="90" Foreground="#378bf3"/>
                 <TextBlock FontSize="32" FontWeight="Bold"  HorizontalAlignment="Center">
                     <TextBlock.Inlines>
-                        <Run Text="Creá tu" Foreground="#444444"></Run>
+                        <Run Text="Creá tu" Foreground="#f2f2f2"></Run>
                         <Run Text="clave maestra" Foreground="#378bf3" />
                     </TextBlock.Inlines>
                 </TextBlock>
                 <TextBlock 
-            TextWrapping="Wrap" FontSize="16" Margin="0,10,0,20" TextAlignment="Center">
+                     TextWrapping="Wrap" FontSize="16" Margin="0,10,0,10" TextAlignment="Center">
                     <TextBlock.Inlines>
-                        <Run Foreground="#848484" Text="Esta clave debe ser ÚNICA y se recomienda que sea guardada en formato físico."/>
-                        <Run TextDecorations="Underline" Foreground="#444444" Text="Una vez perdida no se podrá recuperar."/>
+                        <Run Foreground="#f2f2f2" Text="Esta clave debe ser ÚNICA y se recomienda que sea guardada en formato físico."/>
+                        <Run Foreground="White" TextDecorations="Underline" Text="Una vez perdida no se podrá recuperar."/>
                     </TextBlock.Inlines>
                 </TextBlock>
             </StackPanel>
 
             <!-- Vista para Ingreso de Usuario -->
-            <StackPanel Grid.Row="0" Margin="0,20,0,0" Visibility="{Binding IsNewUser, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+            <StackPanel Grid.Row="1" Margin="0,20,0,0" Visibility="{Binding IsNewUser, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                <ui:SymbolIcon Symbol="LockShield48" FontSize="120" Foreground="#378bf3"  Margin="0,0,0,10"/>
                 <TextBlock FontSize="32" FontWeight="Bold"  HorizontalAlignment="Center" Foreground="#378bf3">
-         Ingrese su clave maestra
+                    Iniciar sesión
+                </TextBlock>
+                <TextBlock 
+                    TextWrapping="Wrap" FontSize="16" Margin="0,10,0,20" TextAlignment="Center">
+                    <TextBlock.Inlines>
+                        <Run Foreground="#f4f4f4" Text="Ingrese su clave maestra para poder iniciar sesión."/>
+                    </TextBlock.Inlines>
                 </TextBlock>
             </StackPanel>
 
             <!-- Inputs para la clave -->
-            <StackPanel Grid.Row="1" VerticalAlignment="Center">
+            <StackPanel Grid.Row="2" VerticalAlignment="Center">
                 <ui:PasswordBox x:Name="MasterKeyInput" 
+                                Background="#171e28"
+                                Foreground="White"
                                 Password="{Binding MasterKey, Mode=OneWayToSource}"
-     PlaceholderText="Ingresa tu clave maestra"/>
+                                PlaceholderText="Ingresa tu clave maestra">
+
+                </ui:PasswordBox>
 
                 <ui:PasswordBox x:Name="RepeatKeyInput"
                                 Password="{Binding RepeatMKey, Mode=OneWayToSource}"
-     PlaceholderText="Repite tu clave maestra" 
-     Margin="0,10,0,0"
-     Visibility="{Binding IsNewUser, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                PlaceholderText="Repite tu clave maestra" 
+                                Background="#171e28"
+                                Margin="0,10,0,0"
+                                Visibility="{Binding IsNewUser, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 <TextBlock Text="{Binding ErrorMessage}" 
-            Foreground="Red" 
-            Margin="0,10,0,0" 
-            TextWrapping="Wrap"
-            Visibility="{Binding ErrorMessageVisibility}"/>
+                                Foreground="#db2d3c" 
+                                TextWrapping="Wrap"
+                                Visibility="{Binding ErrorMessageVisibility}"/>
                 <TextBlock Text="{Binding SuccessMessage}" 
-            Foreground="Green" 
-            Margin="0,10,0,0" 
-            TextWrapping="Wrap"
-            Visibility="{Binding SuccessMessageVisibility}"/>
+                                Foreground="#358b5b" 
+                                Margin="0,5,0,0" 
+                                TextWrapping="Wrap"
+                                Visibility="{Binding SuccessMessageVisibility}"/>
             </StackPanel>
 
-            <ui:Button Grid.Row="2" 
-        Content="{Binding CreateButtonContent}" 
-        HorizontalAlignment="Stretch" 
-        Command="{Binding CreateOrLoginCommand}"/>
+
+            <StackPanel Grid.Row="3" >
+                <ui:Button 
+                    Content="{Binding CreateButtonContent}" 
+                    HorizontalAlignment="Stretch" 
+                    Command="{Binding CreateOrLoginCommand}"/>
+                <TextBlock 
+            TextWrapping="Wrap" FontSize="16" Margin="0,5,0,0" TextAlignment="Center">
+                    <TextBlock.Inlines>
+                        <Run Foreground="#f2f2f2" Text="Crear una nueva clave maestra?"/>
+                    </TextBlock.Inlines>
+                </TextBlock>
+                <ui:Button Padding="5" Cursor="Hand" Command="{Binding TriggerCreateCommand}" HorizontalAlignment="Stretch" Margin="0,5,0,10" Content="Registrarse"></ui:Button>
+                <TextBlock 
+            TextWrapping="Wrap" FontSize="16" TextAlignment="Center">
+                    <TextBlock.Inlines>
+                        <Run Foreground="#f2f2f2" Text="Problemas al iniciar sesión?"/>
+                    </TextBlock.Inlines>
+                </TextBlock>
+                <ui:HyperlinkButton HorizontalAlignment="Center" Foreground="#f8f8f8" NavigateUri="https://passkeeper-security.vercel.app/detailedguide">Consulta la guía detallada</ui:HyperlinkButton>
+
+
+
+            </StackPanel>
+
         </Grid>
     </Border>
 </Window>

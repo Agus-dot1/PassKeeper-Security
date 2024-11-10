@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PassKeeper.Models;
 using PassKeeper.ViewModels.Windows;
 using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
@@ -13,9 +14,6 @@ namespace PassKeeper.ViewModels.Pages
         [ObservableProperty]
         private string _appVersion = String.Empty;
 
-        [ObservableProperty]
-        private ApplicationTheme _currentTheme = ApplicationTheme.Unknown;
-
         public void OnNavigatedTo()
         {
             if (!_isInitialized)
@@ -26,9 +24,7 @@ namespace PassKeeper.ViewModels.Pages
 
         private void InitializeViewModel()
         {
-            CurrentTheme = ApplicationThemeManager.GetAppTheme();
             AppVersion = $"PassKeeper - {GetAssemblyVersion()}";
-
             _isInitialized = true;
         }
 
@@ -37,31 +33,6 @@ namespace PassKeeper.ViewModels.Pages
             return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString()
                 ?? String.Empty;
         }
-
-        [RelayCommand]
-        private void OnChangeTheme(string parameter)
-        {
-            ApplicationTheme newTheme;
-
-            switch (parameter)
-            {
-                case "theme_light":
-                    newTheme = ApplicationTheme.Light;
-                    break;
-                case "theme_dark":
-                    newTheme = ApplicationTheme.Dark;
-                    break;
-                default:
-                    return; 
-            }
-            ApplicationThemeManager.Apply(newTheme);
-            CurrentTheme = newTheme; 
-
-            LoginWindowViewModel loginWindowViewModel = new LoginWindowViewModel();
-            loginWindowViewModel.currentUser.CurrentTheme = newTheme;
-            loginWindowViewModel.currentUser.SaveToFile();
-        }
-
 
     }
 }

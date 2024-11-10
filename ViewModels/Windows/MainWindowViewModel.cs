@@ -1,12 +1,19 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using PassKeeper.Views.Pages;
 using System.Collections.ObjectModel;
+using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
 
 namespace PassKeeper.ViewModels.Windows
 {
     public partial class MainWindowViewModel : ObservableObject
     {
+        public MainWindowViewModel()
+        {
+            ApplicationThemeManager.Apply(ApplicationTheme.Dark);
+        }
+
+
         [ObservableProperty]
         private ObservableCollection<object> _menuItems = new()
         {

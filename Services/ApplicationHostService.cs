@@ -3,6 +3,7 @@ using PassKeeper.Views.Pages;
 using PassKeeper.Views.Windows;
 using System.Windows;
 using Wpf.Ui;
+using Wpf.Ui.Appearance;
 
 namespace PassKeeper.Services
 {
@@ -51,10 +52,10 @@ namespace PassKeeper.Services
                     _serviceProvider.GetService(typeof(INavigationWindow)) as INavigationWindow
                 )!;
 
-
+                ApplicationThemeManager.Apply(ApplicationTheme.Dark);
 
                 _navigationWindow.ShowWindow();
-
+                ApplicationThemeManager.Apply(ApplicationTheme.Dark);
                 _navigationWindow.Navigate(typeof(PasswordsPage));
             }
 

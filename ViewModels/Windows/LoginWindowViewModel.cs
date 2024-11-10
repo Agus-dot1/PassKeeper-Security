@@ -4,6 +4,12 @@ using PassKeeper.Models;
 using PassKeeper.Views.Windows;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using Wpf.Ui.Controls;
+using MessageBox = Wpf.Ui.Controls.MessageBox;
+using MessageBoxResult = Wpf.Ui.Controls.MessageBoxResult;
+using TextBlock = Wpf.Ui.Controls.TextBlock;
 
 namespace PassKeeper.ViewModels.Windows
 {
@@ -28,6 +34,55 @@ namespace PassKeeper.ViewModels.Windows
         }
 
 
+        [RelayCommand]
+        private void TriggerCreate()
+        {
+            var messageBox = new MessageBox
+            {
+                Title = "¿Seguro que quieres crear una nueva clave maestra?",
+                Content = new StackPanel
+                {
+                    Orientation = Orientation.Horizontal,
+                    Children =
+                    {
+                        new SymbolIcon { Symbol = SymbolRegular.Warning12, Foreground = new SolidColorBrush(Colors.OrangeRed), FontSize = 24, Width = 20, Height = 28, Margin = new Thickness(0, 0, 10, 0) },
+                        new TextBlock { Text = "Se borrarán los datos actuales.", VerticalAlignment = VerticalAlignment.Center }
+                    }
+                },
+                PrimaryButtonText = "Aceptar",
+                CloseButtonText = "Cancelar",
+                MinWidth = 300,
+                MinHeight = 100,
+            };
+            var result = messageBox.ShowDialogAsync();
+            if (result.Result == MessageBoxResult.Primary)
+            {
+                string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "databases", "database.json");
+
+                if (File.Exists(dbPath))
+                {
+                    try
+                    {
+                        File.Delete(dbPath);
+                        SuccessMessage = "Datos anteriores eliminados con éxito.";
+                        SuccessMessageVisibility = true;
+                        ErrorMessageVisibility = false;
+                    }
+                    catch (Exception ex)
+                    {
+                        ErrorMessage = $"Error al eliminar datos anteriores: {ex.Message}";
+                        ErrorMessageVisibility = true;
+                        SuccessMessageVisibility = false;
+                        return;
+                    }
+                }
+
+                currentUser = new UserModel(new MasterKeyModel());
+                IsNewUser = true; 
+                CreateButtonContent = "Crear";
+            }
+        }
+    
         [RelayCommand]
         private void CreateOrLogin()
         {
@@ -63,7 +118,6 @@ namespace PassKeeper.ViewModels.Windows
                     mainWindow?.Show();
 
                     OnExit();
-                    MessageBox.Show($"La base de datos fue guardada en {currentUser.FilePath}");
                 }
                 catch (Exception ex)
                 {

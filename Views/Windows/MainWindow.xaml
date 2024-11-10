@@ -6,13 +6,13 @@
                  xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
                  xmlns:local="clr-namespace:PassKeeper.Views.Windows"
                  d:DataContext="{d:DesignInstance local:MainWindow, IsDesignTimeCreatable=True}"
-                 Width="1280"
                  Height="800"
                  MinWidth="1280"
                  MinHeight="800"
                  WindowStartupLocation="CenterScreen"
                  WindowStyle="None"
                  WindowBackdropType="Mica"
+                 BorderBrush="#384150"
                  ExtendsContentIntoTitleBar="True"
                  mc:Ignorable="d"
                  Title="PassKeeper">
@@ -24,32 +24,32 @@
             </StackPanel>
         </DataTemplate>
     </Window.Resources>
-    <Grid>
+    <Grid Background="#202936">
         <ui:TitleBar
-            Foreground="#378bf3"
-            x:Name="TitleBar"
-            FontSize="24"
-            FontFamily="Onest"
-            FontWeight="Bold"
-            Height="50"
-            Title="PassKeeper"
-            >
+                Foreground="#378bf3"
+                x:Name="TitleBar"
+                FontSize="24"
+                FontFamily="Onest"
+                FontWeight="Bold"
+                Height="50"
+                Title="PassKeeper"
+                >
             <ui:TitleBar.Icon>
                 <ui:SymbolIcon Foreground="#378bf3" Symbol="LockClosed12" Margin="0,-4,0,-2" Width="20"/>
             </ui:TitleBar.Icon>
         </ui:TitleBar>
 
         <ui:NavigationView
-            x:Name="RootNavigation"
-            Padding="42,0,42,0"
-            FrameMargin="0"
-            Margin="0,50,0,0"
-            IsBackButtonVisible="Collapsed"
-            IsPaneToggleVisible="True"
-            OpenPaneLength="220"
-            PaneDisplayMode="Left"
-            MenuItemsSource="{Binding ViewModel.MenuItems, Mode=OneWay}"
-            FooterMenuItemsSource="{Binding ViewModel.FooterMenuItems, Mode=OneWay}">
+                x:Name="RootNavigation"
+                Padding="42,0,42,0"
+                FrameMargin="0"
+                Margin="0,50,0,0"
+                IsBackButtonVisible="Collapsed"
+                IsPaneToggleVisible="True"
+                OpenPaneLength="220"
+                PaneDisplayMode="Left"
+                MenuItemsSource="{Binding ViewModel.MenuItems, Mode=OneWay}"
+                FooterMenuItemsSource="{Binding ViewModel.FooterMenuItems, Mode=OneWay}">
             <ui:NavigationView.ContentOverlay>
                 <Grid>
                     <ui:SnackbarPresenter x:Name="SnackbarPresenter" />

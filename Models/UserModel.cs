@@ -10,7 +10,6 @@ namespace PassKeeper.Models
         public string FilePath { get; set; }
         public MasterKeyModel MasterKey { get; set; }
         public ObservableCollection<Passwords> Passwords { get; set; }
-        public ApplicationTheme CurrentTheme { get; set; } = ApplicationTheme.Light;
 
 
         public UserModel(MasterKeyModel masterKey)

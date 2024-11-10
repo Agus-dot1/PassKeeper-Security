@@ -19,11 +19,12 @@ namespace PassKeeper.ViewModels.Pages
     public partial class PasswordViewModel : ObservableObject
     {
         [ObservableProperty] public string? searchText;
+        [ObservableProperty] public string? usernameIsNull;
 
         private LoginWindowViewModel loginWindowViewModel = new LoginWindowViewModel();
         public ObservableCollection<Passwords> PasswordsCollection { get; } = new ObservableCollection<Passwords>();
         public ObservableCollection<Passwords> FilteredPasswordsCollection { get; } = new ObservableCollection<Passwords>();
-        
+
 
         public PasswordViewModel()
         {
@@ -44,19 +45,21 @@ namespace PassKeeper.ViewModels.Pages
         private void FilterPasswords()
         {
             FilteredPasswordsCollection.Clear();
-    foreach (var password in PasswordsCollection)
-    {
-        if (string.IsNullOrEmpty(SearchText) || password.Name.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase))
-        {
-            FilteredPasswordsCollection.Add(password);
-        }
-    }
+            foreach (var password in PasswordsCollection)
+            {
+                if (string.IsNullOrEmpty(SearchText) || password.Name.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    FilteredPasswordsCollection.Add(password);
+                }
+            }
         }
 
         partial void OnSearchTextChanged(string? value)
         {
             FilterPasswords();
         }
+
+        public bool IsUsernameNull => string.IsNullOrEmpty(usernameIsNull);
 
 
         [RelayCommand]
@@ -104,6 +107,7 @@ namespace PassKeeper.ViewModels.Pages
             Clipboard.SetText(password.Username);
         }
 
+
         [RelayCommand]
         public void CopyPassword(Passwords password)
         {
@@ -141,18 +145,20 @@ namespace PassKeeper.ViewModels.Pages
 
             addPasswordWindow.ShowDialog();
 
-            if (addPasswordViewModel.SelectedIcon == 0 && string.IsNullOrEmpty(addPasswordViewModel.Icon))
-            {
-                addPasswordViewModel.Icon = password.Icon;
-            }
-
             if (addPasswordViewModel.PasswordAdded == true)
             {
                 password.Id = password.Id;
                 password.Name = addPasswordViewModel.Name;
                 password.Username = addPasswordViewModel.Username;
                 password.Password = addPasswordViewModel.GeneratedPassword;
-                password.Icon = IconOptions[icon].Name;
+                if (password.Icon == addPasswordViewModel.Icon)
+                {
+                    password.Icon = IconOptions[icon].Name;
+                }
+                else
+                {
+                    password.Icon = addPasswordViewModel.Icon;
+                }
                 password.Url = addPasswordViewModel.Url;
                 password.Notes = addPasswordViewModel.Note;
                 loginWindowViewModel.currentUser.SaveToFile();

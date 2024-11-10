@@ -12,6 +12,7 @@ using PassKeeper.Views.Pages;
 using PassKeeper.ViewModels;
 using PassKeeper.Services;
 using PassKeeper.ViewModels.Pages;
+using Wpf.Ui.Appearance;
 
 namespace PassKeeper
 {
@@ -78,11 +79,20 @@ namespace PassKeeper
         /// <summary>
         /// Occurs when the application is loading.
         /// </summary>
+        /// 
+
+        public App()
+        {
+            ApplicationThemeManager.Apply(ApplicationTheme.Dark);
+            InitializeComponent();
+        }
+
         private void OnStartup(object sender, StartupEventArgs e)
         {
             _host.Start();
-
+           
             _host.Services.GetService<LoginWindowViewModel>();
+            _host.Services.GetService<MainWindowViewModel>();
             LoginWindow loginWindow = _host.Services.GetRequiredService<LoginWindow>();
             loginWindow.ShowDialog();
         }
