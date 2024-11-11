@@ -12,7 +12,6 @@
                  WindowStartupLocation="CenterScreen"
                  WindowStyle="None"
                  WindowBackdropType="Mica"
-                 BorderBrush="#384150"
                  ExtendsContentIntoTitleBar="True"
                  mc:Ignorable="d"
                  Title="PassKeeper">

@@ -67,6 +67,7 @@ namespace PassKeeper.ViewModels.Windows
                         SuccessMessage = "Datos anteriores eliminados con éxito.";
                         SuccessMessageVisibility = true;
                         ErrorMessageVisibility = false;
+                        MasterKey = RepeatMKey = string.Empty;
                     }
                     catch (Exception ex)
                     {
@@ -93,6 +94,7 @@ namespace PassKeeper.ViewModels.Windows
                     ErrorMessage = "No se pueden dejar campos vacíos.";
                     ErrorMessageVisibility = true;
                     SuccessMessageVisibility = false;
+                    MasterKey = RepeatMKey = string.Empty;
                     return;
                 }
 
@@ -101,6 +103,7 @@ namespace PassKeeper.ViewModels.Windows
                     ErrorMessage = "Las claves no coinciden.";
                     ErrorMessageVisibility = true;
                     SuccessMessageVisibility = false;
+                    MasterKey = RepeatMKey = string.Empty;
                     return;
                 }
 
@@ -136,6 +139,7 @@ namespace PassKeeper.ViewModels.Windows
                     ErrorMessage = "No se encontró el archivo de la clave o la clave es incorrecta.";
                     ErrorMessageVisibility = true;
                     SuccessMessageVisibility = false;
+                    MasterKey = RepeatMKey = string.Empty;
                     return;
                 }
                 else if (isCorrect)

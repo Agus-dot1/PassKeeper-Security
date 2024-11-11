@@ -72,13 +72,13 @@
                 <ui:PasswordBox x:Name="MasterKeyInput" 
                                 Background="#171e28"
                                 Foreground="White"
-                                Password="{Binding MasterKey, Mode=OneWayToSource}"
+                                Password="{Binding MasterKey, Mode=TwoWay}"
                                 PlaceholderText="Ingresa tu clave maestra">
 
                 </ui:PasswordBox>
 
                 <ui:PasswordBox x:Name="RepeatKeyInput"
-                                Password="{Binding RepeatMKey, Mode=OneWayToSource}"
+                                Password="{Binding RepeatMKey, Mode=TwoWay}"
                                 PlaceholderText="Repite tu clave maestra" 
                                 Background="#171e28"
                                 Margin="0,10,0,0"

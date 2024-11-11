@@ -77,6 +77,7 @@ namespace PassKeeper.ViewModels
                     }
                 }
             };
+            messageBox2.CloseButtonText = "Aceptar";
             Icon = IconOptions[SelectedIcon].Name;
             PasswordAdded = true;
             messageBox2.ShowDialogAsync();
@@ -124,7 +125,7 @@ namespace PassKeeper.ViewModels
 
             Random random = new Random();
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 25; i++)
             {
                 password.Append(charPool[random.Next(charPool.Length)]);
             }
