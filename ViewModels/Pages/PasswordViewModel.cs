@@ -99,7 +99,7 @@ namespace PassKeeper.ViewModels.Pages
         }
 
         [RelayCommand]
-        public void CopyUsername(Passwords password)
+        public static void CopyUsername(Passwords password)
         {
             if (password.Username == null) return;
             Clipboard.SetText(password.Username);
@@ -107,16 +107,9 @@ namespace PassKeeper.ViewModels.Pages
 
 
         [RelayCommand]
-        public void CopyPassword(Passwords password)
+        public static void CopyPassword(Passwords password)
         {
             if (password.Password == null) return;
-
-            if (password.Password.Contains('*')){
-                PasswordBox passwordBox = new PasswordBox();
-                passwordBox.Password = password.Password;
-                Clipboard.SetText(passwordBox.Password);
-            }
-
             Clipboard.SetText(password.Password);
         }
 

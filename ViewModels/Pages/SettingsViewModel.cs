@@ -24,7 +24,7 @@ namespace PassKeeper.ViewModels.Pages
 
         private void InitializeViewModel()
         {
-            AppVersion = $"PassKeeper - {GetAssemblyVersion()}";
+            AppVersion = $"PassKeeper v1.0.0";
             _isInitialized = true;
         }
 

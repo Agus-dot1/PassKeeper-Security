@@ -40,9 +40,9 @@
 
         <ui:NavigationView
                 x:Name="RootNavigation"
-                Padding="42,0,42,0"
                 FrameMargin="0"
                 Margin="0,50,0,0"
+                Padding="80,0,80,0"
                 IsBackButtonVisible="Collapsed"
                 IsPaneToggleVisible="True"
                 OpenPaneLength="220"

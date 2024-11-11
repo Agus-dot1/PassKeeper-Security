@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PassKeeper": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
