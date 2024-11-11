@@ -17,8 +17,8 @@
         MouseDown="Window_MouseDown"
         Title="LoginWindow" Height="580" Width="560">
     <Window.Resources>
-        <conv:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-        <conv:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter"/>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <conv:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"/>
     </Window.Resources>
     <Border CornerRadius="10" BorderBrush="#384150" BorderThickness="1" Background="#202936">
         <Grid Margin="30">
@@ -36,7 +36,7 @@
             
             
             <!-- Vista para Nuevo Usuario -->
-            <StackPanel Grid.Row="1" Visibility="{Binding IsNewUser, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <StackPanel Grid.Row="1" Visibility="{Binding IsNewUser, Converter={StaticResource BoolToVisibilityConverter}}">
                 <ui:SymbolIcon Symbol="LockShield48" FontSize="90" Foreground="#378bf3"/>
                 <TextBlock FontSize="32" FontWeight="Bold"  HorizontalAlignment="Center">
                     <TextBlock.Inlines>
@@ -54,7 +54,7 @@
             </StackPanel>
 
             <!-- Vista para Ingreso de Usuario -->
-            <StackPanel Grid.Row="1" Margin="0,20,0,0" Visibility="{Binding IsNewUser, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+            <StackPanel Grid.Row="1" Margin="0,20,0,0" Visibility="{Binding IsNewUser, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
                 <ui:SymbolIcon Symbol="LockShield48" FontSize="120" Foreground="#378bf3"  Margin="0,0,0,10"/>
                 <TextBlock FontSize="32" FontWeight="Bold"  HorizontalAlignment="Center" Foreground="#378bf3">
                     Iniciar sesión
@@ -82,7 +82,7 @@
                                 PlaceholderText="Repite tu clave maestra" 
                                 Background="#171e28"
                                 Margin="0,10,0,0"
-                                Visibility="{Binding IsNewUser, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                Visibility="{Binding IsNewUser, Converter={StaticResource BoolToVisibilityConverter}}"/>
                 <TextBlock Text="{Binding ErrorMessage}" 
                                 Foreground="#db2d3c" 
                                 TextWrapping="Wrap"

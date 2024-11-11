@@ -55,7 +55,9 @@ namespace PassKeeper.ViewModels
                                 VerticalAlignment = VerticalAlignment.Center
                             }
                         }
-                    }
+                    },
+                    Background = new SolidColorBrush(Color.FromArgb(255, 32, 41, 51)),
+                    CloseButtonText = "Aceptar",
                 };
                 messageBox.ShowDialogAsync();
                 return;
@@ -74,10 +76,11 @@ namespace PassKeeper.ViewModels
                             Text = "La contraseña ha sido creada con exito",
                             VerticalAlignment = VerticalAlignment.Center
                         }
-                    }
-                }
+                    },
+                },
+                Background = new SolidColorBrush(Color.FromArgb(255, 32, 41, 51)),
+                CloseButtonText = "Aceptar"
             };
-            messageBox2.CloseButtonText = "Aceptar";
             Icon = IconOptions[SelectedIcon].Name;
             PasswordAdded = true;
             messageBox2.ShowDialogAsync();
@@ -149,6 +152,7 @@ namespace PassKeeper.ViewModels
                         new TextBlock { Text = "Se perderán los cambios.", VerticalAlignment = VerticalAlignment.Center }
                     }
                 },
+                Background = new SolidColorBrush(Color.FromArgb(255, 32, 41, 51)),
                 PrimaryButtonText = "Aceptar",
                 CloseButtonText = "Cancelar",
                 MinWidth = 300,

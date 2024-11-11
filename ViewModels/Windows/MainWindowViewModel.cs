@@ -19,12 +19,6 @@ namespace PassKeeper.ViewModels.Windows
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Key16 },
                 TargetPageType = typeof(PasswordsPage)
             },
-            new NavigationViewItem()
-            {
-                Content = "Colecciones",
-                Icon = new SymbolIcon { Symbol = SymbolRegular.Folder16 },
-                TargetPageType = typeof(CollectionPage)
-            }
         };
 
         [ObservableProperty]

@@ -27,7 +27,7 @@ namespace PassKeeper.ViewModels.Windows
 
         public LoginWindowViewModel()
         {
-            string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "databases", "database.json");
+            string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "databases", "database.pks");
             currentUser = UserModel.LoadFromFile(dbPath) ?? new UserModel(new MasterKeyModel());
             IsNewUser = string.IsNullOrEmpty(currentUser.MasterKey.HashedKey);
             CreateButtonContent = IsNewUser ? "Crear" : "Ingresar";
@@ -49,6 +49,7 @@ namespace PassKeeper.ViewModels.Windows
                         new TextBlock { Text = "Se borrarán los datos actuales.", VerticalAlignment = VerticalAlignment.Center }
                     }
                 },
+                Background = new SolidColorBrush(Color.FromArgb(255, 32, 41, 51)),
                 PrimaryButtonText = "Aceptar",
                 CloseButtonText = "Cancelar",
                 MinWidth = 300,
@@ -57,7 +58,7 @@ namespace PassKeeper.ViewModels.Windows
             var result = messageBox.ShowDialogAsync();
             if (result.Result == MessageBoxResult.Primary)
             {
-                string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "databases", "database.json");
+                string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "databases", "database.pks");
 
                 if (File.Exists(dbPath))
                 {

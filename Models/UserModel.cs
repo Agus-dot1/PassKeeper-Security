@@ -15,7 +15,7 @@ namespace PassKeeper.Models
         public UserModel(MasterKeyModel masterKey)
         {
             string dbDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "databases");
-            FilePath = Path.Combine(dbDirectory, "database.json");
+            FilePath = Path.Combine(dbDirectory, "database.pks");
             Directory.CreateDirectory(dbDirectory);
 
             MasterKey = masterKey;
@@ -35,8 +35,15 @@ namespace PassKeeper.Models
 
         public void SaveToFile()
         {
-            string jsonData = JsonSerializer.Serialize(this);
-            File.WriteAllText(FilePath, jsonData);
+            try
+            {
+                string jsonData = JsonSerializer.Serialize(this);
+                File.WriteAllText(FilePath, jsonData);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al guardar el archivo: {ex.Message}");
+            }
         }
 
         public static UserModel? LoadFromFile(string filePath)
@@ -44,9 +51,17 @@ namespace PassKeeper.Models
             if(!File.Exists(filePath)) return null;
 
 
-            string jsonData = File.ReadAllText(filePath);
-            UserModel? user = JsonSerializer.Deserialize<UserModel>(jsonData);
-            return user;
+            try
+            {
+                string jsonData = File.ReadAllText(filePath);
+                UserModel? user = JsonSerializer.Deserialize<UserModel>(jsonData);
+                return user;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al cargar el archivo: {ex.Message}");
+                return null;
+            }
         }
 
 

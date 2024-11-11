@@ -177,6 +177,7 @@ namespace PassKeeper.ViewModels.Pages
                         new TextBlock { Text = "No se puede deshacer esta operación.", VerticalAlignment = VerticalAlignment.Center }
                     }
                 },
+                Background = new SolidColorBrush(Color.FromArgb(255, 32, 41, 51)),
                 PrimaryButtonText = "Borrar",
                 CloseButtonText = "Cancelar",
                 MinWidth = 300,
