@@ -12,6 +12,7 @@ using System.Windows.Media;
 using Wpf.Ui.Controls;
 using MessageBox = Wpf.Ui.Controls.MessageBox;
 using MessageBoxResult = Wpf.Ui.Controls.MessageBoxResult;
+using PasswordBox = Wpf.Ui.Controls.PasswordBox;
 using TextBlock = Wpf.Ui.Controls.TextBlock;
 
 namespace PassKeeper.ViewModels.Pages
@@ -91,7 +92,7 @@ namespace PassKeeper.ViewModels.Pages
         }
 
         [RelayCommand]
-        public void CopyUrl(Passwords password)
+        public static void CopyUrl(Passwords password)
         {
             if (password.Url == null) return;
             Clipboard.SetText(password.Url);
@@ -109,8 +110,16 @@ namespace PassKeeper.ViewModels.Pages
         public void CopyPassword(Passwords password)
         {
             if (password.Password == null) return;
+
+            if (password.Password.Contains('*')){
+                PasswordBox passwordBox = new PasswordBox();
+                passwordBox.Password = password.Password;
+                Clipboard.SetText(passwordBox.Password);
+            }
+
             Clipboard.SetText(password.Password);
         }
+
 
 
         [RelayCommand]

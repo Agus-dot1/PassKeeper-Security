@@ -121,7 +121,7 @@ namespace PassKeeper.ViewModels
         {
             const string letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
             const string numbers = "0123456789";
-            const string specialChars = "!@#$%^&*()-+?_=,<>/.;{}[]";
+            const string specialChars = "!@#$%^&()-+?_=,<>/.;{}[]";
 
             StringBuilder charPool = new StringBuilder(letters + numbers + specialChars);
             StringBuilder password = new StringBuilder();
