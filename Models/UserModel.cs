@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.Json;
 using Wpf.Ui.Appearance;
@@ -10,6 +11,8 @@ namespace PassKeeper.Models
         public string FilePath { get; set; }
         public MasterKeyModel MasterKey { get; set; }
         public ObservableCollection<Passwords> Passwords { get; set; }
+
+        
 
 
         public UserModel(MasterKeyModel masterKey)

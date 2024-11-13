@@ -17,43 +17,44 @@
     <Page.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
     </Page.Resources>
+    <Border>
+        <StackPanel>
+            <TextBlock
+            Margin="80,30,80,10"
+            FontSize="20"
+            FontWeight="Medium"
+            FontFamily="Onest"
+            Text="Configuraciones" />
 
-    <StackPanel>
-        <TextBlock
-        Margin="0,30,0,10"
-        FontSize="20"
-        FontWeight="Medium"
-        FontFamily="Onest"
-        Text="Configuraciones" />
-        
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Border Padding="30" Margin="0,0,30,0" Background="#2f3744" CornerRadius="10">
-                <StackPanel >
-                    <ui:TextBlock FontFamily="Onest"  FontSize="20" FontWeight="Medium" Text="Problemas con la aplicación?"></ui:TextBlock>
-                    <ui:TextBlock TextWrapping="Wrap" Margin="0,5,0,10" FontFamily="Onest"  FontSize="16" Foreground="#f2f2f2" Text="Contacta al soporte y completa el formulario. Podes hacerlo haciendo click en el botón"></ui:TextBlock>
-                    <ui:HyperlinkButton NavigateUri="https://passkeeper-security.vercel.app/support" FontFamily="Onest" VerticalAlignment="Bottom" FontSize="16" Foreground="#378bf3" HorizontalAlignment="Center">
-                        <ui:HyperlinkButton.Content>
-                            <TextBlock FontFamily="Onest" FontSize="16" Text="Contactar con el soporte" />
-                        </ui:HyperlinkButton.Content>
-                    </ui:HyperlinkButton>
-                </StackPanel>
-            </Border>
-            <Border Grid.Column="1" Padding="30" Background="#2f3744" CornerRadius="10">
-                <StackPanel >
-                    <ui:TextBlock FontFamily="Onest"  FontSize="20" FontWeight="Medium" Text="Necesitas una guia?"></ui:TextBlock>
-                    <ui:TextBlock TextWrapping="Wrap" Margin="0,5,0,10" FontFamily="Onest"  FontSize="16" Foreground="#f2f2f2" Text="Puedes acceder a la guía detallada de PassKeeper haciendo click en el botón"></ui:TextBlock>
-                    <ui:HyperlinkButton NavigateUri="https://passkeeper-security.vercel.app/detailedguide" FontFamily="Onest" VerticalAlignment="Bottom" FontSize="16" Foreground="#378bf3" HorizontalAlignment="Center">
-                        <ui:HyperlinkButton.Content>
-                            <TextBlock FontFamily="Onest" FontSize="16" Text="Guía detallada" />
-                        </ui:HyperlinkButton.Content>
-                    </ui:HyperlinkButton>
-                </StackPanel>
-            </Border>
-        </Grid>
-        <TextBlock Margin="0,100,0,0" HorizontalAlignment="Center" FontFamily="Onest" Text="{Binding ViewModel.AppVersion, Mode=OneWay}" />
-    </StackPanel>
+            <Grid Margin="80,30,80,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Border Padding="30" Margin="0,0,30,0" Background="#2f3744" CornerRadius="10">
+                    <StackPanel >
+                        <ui:TextBlock FontFamily="Onest"  FontSize="20" FontWeight="Medium" Text="Problemas con la aplicación?"></ui:TextBlock>
+                        <ui:TextBlock TextWrapping="Wrap" Margin="0,5,0,10" FontFamily="Onest"  FontSize="16" Foreground="#f2f2f2" Text="Contacta al soporte y completa el formulario. Podes hacerlo haciendo click en el botón"></ui:TextBlock>
+                        <ui:HyperlinkButton NavigateUri="https://passkeeper-security.vercel.app/support" FontFamily="Onest" VerticalAlignment="Bottom" FontSize="16" Foreground="#378bf3" HorizontalAlignment="Center">
+                            <ui:HyperlinkButton.Content>
+                                <TextBlock FontFamily="Onest" FontSize="16" Text="Contactar con el soporte" />
+                            </ui:HyperlinkButton.Content>
+                        </ui:HyperlinkButton>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="1" Padding="30" Background="#2f3744" CornerRadius="10">
+                    <StackPanel >
+                        <ui:TextBlock FontFamily="Onest"  FontSize="20" FontWeight="Medium" Text="Necesitas una guia?"></ui:TextBlock>
+                        <ui:TextBlock TextWrapping="Wrap" Margin="0,5,0,10" FontFamily="Onest"  FontSize="16" Foreground="#f2f2f2" Text="Puedes acceder a la guía detallada de PassKeeper haciendo click en el botón"></ui:TextBlock>
+                        <ui:HyperlinkButton NavigateUri="https://passkeeper-security.vercel.app/detailedguide" FontFamily="Onest" VerticalAlignment="Bottom" FontSize="16" Foreground="#378bf3" HorizontalAlignment="Center">
+                            <ui:HyperlinkButton.Content>
+                                <TextBlock FontFamily="Onest" FontSize="16" Text="Guía detallada" />
+                            </ui:HyperlinkButton.Content>
+                        </ui:HyperlinkButton>
+                    </StackPanel>
+                </Border>
+            </Grid>
+            <TextBlock Margin="0,100,0,0" HorizontalAlignment="Center" FontFamily="Onest" Text="{Binding ViewModel.AppVersion, Mode=OneWay}" />
+        </StackPanel>
+    </Border>
 </Page>

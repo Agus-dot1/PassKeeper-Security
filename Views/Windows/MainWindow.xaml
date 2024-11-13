@@ -23,7 +23,7 @@
             </StackPanel>
         </DataTemplate>
     </Window.Resources>
-    <Grid Background="#202936">
+    <Grid Background="#101729">
         <ui:TitleBar
                 Foreground="#378bf3"
                 x:Name="TitleBar"
@@ -42,7 +42,6 @@
                 x:Name="RootNavigation"
                 FrameMargin="0"
                 Margin="0,50,0,0"
-                Padding="80,0,80,0"
                 IsBackButtonVisible="Collapsed"
                 IsPaneToggleVisible="True"
                 OpenPaneLength="220"

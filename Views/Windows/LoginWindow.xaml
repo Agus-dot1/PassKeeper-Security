@@ -15,12 +15,12 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         MouseDown="Window_MouseDown"
-        Title="LoginWindow" Height="580" Width="560">
+        Title="LoginWindow" Height="670" Width="450">
     <Window.Resources>
         <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <conv:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"/>
     </Window.Resources>
-    <Border CornerRadius="10" BorderBrush="#384150" BorderThickness="1" Background="#202936">
+    <Border CornerRadius="10" BorderBrush="#384150" BorderThickness="1" Background="#101729">
         <Grid Margin="30">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -37,7 +37,9 @@
             
             <!-- Vista para Nuevo Usuario -->
             <StackPanel Grid.Row="1" Visibility="{Binding IsNewUser, Converter={StaticResource BoolToVisibilityConverter}}">
-                <ui:SymbolIcon Symbol="LockShield48" FontSize="90" Foreground="#378bf3"/>
+                <Border CornerRadius="100" Background="#15223e" Padding="10" HorizontalAlignment="Center">
+                    <ui:SymbolIcon Symbol="LockShield48" FontSize="90" Foreground="#378bf3"/>
+                </Border>
                 <TextBlock FontSize="32" FontWeight="Bold"  HorizontalAlignment="Center">
                     <TextBlock.Inlines>
                         <Run Text="Creá tu" Foreground="#f2f2f2"></Run>
@@ -47,8 +49,8 @@
                 <TextBlock 
                      TextWrapping="Wrap" FontSize="16" Margin="0,10,0,10" TextAlignment="Center">
                     <TextBlock.Inlines>
-                        <Run Foreground="#f2f2f2" Text="Esta clave debe ser ÚNICA y se recomienda que sea guardada en formato físico."/>
-                        <Run Foreground="White" TextDecorations="Underline" Text="Una vez perdida no se podrá recuperar."/>
+                        <Run Foreground="#b4c5dd" Text="Esta clave debe ser ÚNICA y se recomienda que sea guardada en formato físico."/>
+                        <Run Foreground="#b4c5dd" TextDecorations="Underline" Text="Una vez perdida no se podrá recuperar."/>
                     </TextBlock.Inlines>
                 </TextBlock>
             </StackPanel>
@@ -69,19 +71,25 @@
 
             <!-- Inputs para la clave -->
             <StackPanel Grid.Row="2" VerticalAlignment="Center">
+                <Label Content="Clave maestra" Margin="0,10,0,0" FontWeight="DemiBold"  Foreground="#f2f2f2"/>
                 <ui:PasswordBox x:Name="MasterKeyInput" 
-                                Background="#171e28"
+                                Background="#1f293a"
                                 Foreground="White"
+                                Padding="10"
                                 Password="{Binding MasterKey, Mode=TwoWay}"
-                                PlaceholderText="Ingresa tu clave maestra">
+                                >
 
                 </ui:PasswordBox>
 
+                <Label 
+                    Content="Repite tu clave" 
+                    Margin="0,10,0,0" 
+                    FontWeight="DemiBold" Foreground="#f2f2f2"
+                    Visibility="{Binding IsNewUser, Converter={StaticResource BoolToVisibilityConverter}}"/>
                 <ui:PasswordBox x:Name="RepeatKeyInput"
                                 Password="{Binding RepeatMKey, Mode=TwoWay}"
-                                PlaceholderText="Repite tu clave maestra" 
-                                Background="#171e28"
-                                Margin="0,10,0,0"
+                                Background="#1f293a"
+                                Padding="10"
                                 Visibility="{Binding IsNewUser, Converter={StaticResource BoolToVisibilityConverter}}"/>
                 <TextBlock Text="{Binding ErrorMessage}" 
                                 Foreground="#db2d3c" 
@@ -99,21 +107,22 @@
                 <ui:Button 
                     Content="{Binding CreateButtonContent}" 
                     HorizontalAlignment="Stretch" 
-                    Command="{Binding CreateOrLoginCommand}"/>
-                <TextBlock 
-            TextWrapping="Wrap" FontSize="16" Margin="0,5,0,0" TextAlignment="Center">
-                    <TextBlock.Inlines>
-                        <Run Foreground="#f2f2f2" Text="Crear una nueva clave maestra?"/>
-                    </TextBlock.Inlines>
-                </TextBlock>
-                <ui:Button Padding="5" Cursor="Hand" Command="{Binding TriggerCreateCommand}" HorizontalAlignment="Stretch" Margin="0,5,0,10" Content="Registrarse"></ui:Button>
+                    Command="{Binding CreateOrLoginCommand}"
+                    Height="50"
+                    CornerRadius="5"
+                    Background="#3f76d9"
+                    MouseOverBackground="#294d8d"
+                    MouseOverBorderBrush="#3461b3"
+                    Cursor="Hand"
+                    />
+                <ui:Button Padding="5" BorderThickness="0" Background="Transparent" Foreground="#578ed4" MouseOverBackground="Transparent" Cursor="Hand" Command="{Binding TriggerCreateCommand}" HorizontalAlignment="Center" Margin="0,5,0,10" Content="Crear una nueva llave maestra?"/>
                 <TextBlock 
             TextWrapping="Wrap" FontSize="16" TextAlignment="Center">
                     <TextBlock.Inlines>
-                        <Run Foreground="#f2f2f2" Text="Problemas al iniciar sesión?"/>
+                        <Run Foreground="#b4c5dd" Text="Problemas al iniciar sesión?"/>
                     </TextBlock.Inlines>
                 </TextBlock>
-                <ui:HyperlinkButton HorizontalAlignment="Center" Foreground="#f8f8f8" NavigateUri="https://passkeeper-security.vercel.app/detailedguide">Consulta la guía detallada</ui:HyperlinkButton>
+                <ui:HyperlinkButton HorizontalAlignment="Center" Foreground="#578ed4" Cursor="Hand" NavigateUri="https://passkeeper-security.vercel.app/detailedguide">Consulta la guía detallada</ui:HyperlinkButton>
 
 
 

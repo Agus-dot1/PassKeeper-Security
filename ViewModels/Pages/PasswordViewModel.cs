@@ -19,6 +19,7 @@ namespace PassKeeper.ViewModels.Pages
 {
     public partial class PasswordViewModel : ObservableObject
     {
+        public bool IsPasswordsNull => !FilteredPasswordsCollection.Any();
         [ObservableProperty] public string? searchText;
         private LoginWindowViewModel loginWindowViewModel = new LoginWindowViewModel();
         public ObservableCollection<Passwords> PasswordsCollection { get; } = new ObservableCollection<Passwords>();
@@ -27,6 +28,7 @@ namespace PassKeeper.ViewModels.Pages
 
         public PasswordViewModel()
         {
+            FilteredPasswordsCollection.CollectionChanged += (s, e) => OnPropertyChanged(nameof(IsPasswordsNull));
             LoadPasswords();
         }
 
@@ -39,6 +41,7 @@ namespace PassKeeper.ViewModels.Pages
                 PasswordsCollection.Add(password);
             }
             FilterPasswords();
+            OnPropertyChanged(nameof(IsPasswordsNull));
         }
 
         private void FilterPasswords()
@@ -89,6 +92,7 @@ namespace PassKeeper.ViewModels.Pages
                 PasswordsCollection.Add(newPassword);
             }
             FilterPasswords();
+            OnPropertyChanged(nameof(IsPasswordsNull));
         }
 
         [RelayCommand]
