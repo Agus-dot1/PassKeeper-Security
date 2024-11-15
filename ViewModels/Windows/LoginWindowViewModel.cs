@@ -35,7 +35,7 @@ namespace PassKeeper.ViewModels.Windows
 
 
         [RelayCommand]
-        private void TriggerCreate()
+        private async Task TriggerCreate()
         {
             var messageBox = new MessageBox
             {
@@ -49,14 +49,15 @@ namespace PassKeeper.ViewModels.Windows
                         new TextBlock { Text = "Se borrarán los datos actuales.", VerticalAlignment = VerticalAlignment.Center }
                     }
                 },
-                Background = new SolidColorBrush(Color.FromArgb(255, 32, 41, 51)),
+                Background = new SolidColorBrush(Color.FromArgb(255, 16, 23, 41)),
                 PrimaryButtonText = "Aceptar",
                 CloseButtonText = "Cancelar",
                 MinWidth = 300,
                 MinHeight = 100,
             };
-            var result = messageBox.ShowDialogAsync();
-            if (result.Result == MessageBoxResult.Primary)
+            var result = await messageBox.ShowDialogAsync();
+
+            if (result == MessageBoxResult.Primary)
             {
                 string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "databases", "database.pks");
 
@@ -64,7 +65,7 @@ namespace PassKeeper.ViewModels.Windows
                 {
                     try
                     {
-                        File.Delete(dbPath);
+                        await Task.Run(() => File.Delete(dbPath));
                         SuccessMessage = "Datos anteriores eliminados con éxito.";
                         SuccessMessageVisibility = true;
                         ErrorMessageVisibility = false;
@@ -80,17 +81,18 @@ namespace PassKeeper.ViewModels.Windows
                 }
 
                 currentUser = new UserModel(new MasterKeyModel());
-                IsNewUser = true; 
+                IsNewUser = true;
                 CreateButtonContent = "Crear";
+                MasterKey = RepeatMKey = string.Empty;
             }
         }
-    
+
         [RelayCommand]
         private void CreateOrLogin()
         {
             if (IsNewUser)
             {
-                if (MasterKey.Length == 0 || RepeatMKey.Length == 0)
+                if (string.IsNullOrEmpty(MasterKey) || string.IsNullOrEmpty(RepeatMKey))
                 {
                     ErrorMessage = "No se pueden dejar campos vacíos.";
                     ErrorMessageVisibility = true;
@@ -118,7 +120,7 @@ namespace PassKeeper.ViewModels.Windows
 
                     currentUser.SaveToFile();
 
-                    MainWindow? mainWindow = App.GetService<MainWindow>();
+                    var mainWindow = App.GetService<MainWindow>();
                     mainWindow?.Show();
 
                     OnExit();
@@ -149,7 +151,7 @@ namespace PassKeeper.ViewModels.Windows
                     SuccessMessageVisibility = true;
                     ErrorMessageVisibility = false;
 
-                    MainWindow? mainWindow = App.GetService<MainWindow>();
+                    var mainWindow = App.GetService<MainWindow>();
                     mainWindow?.Show();
 
                     OnExit();
@@ -164,16 +166,14 @@ namespace PassKeeper.ViewModels.Windows
             }
         }
 
-        private async void OnExit()
+        private void OnExit()
         {
-            await Task.Delay(500);
             Application.Current.Windows.OfType<LoginWindow>().FirstOrDefault()?.Close();
         }
 
         [RelayCommand]
-        private async static Task CloseLogin()
+        private void CloseLogin()
         {
-            await Task.Delay(500);
             Application.Current.Windows.OfType<LoginWindow>().FirstOrDefault()?.Close();
         }
     }

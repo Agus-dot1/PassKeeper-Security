@@ -8,7 +8,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Wpf.Ui.Controls;
-using Wpf.Ui.Extensions;
 using MessageBox = Wpf.Ui.Controls.MessageBox;
 using MessageBoxResult = Wpf.Ui.Controls.MessageBoxResult;
 using TextBlock = Wpf.Ui.Controls.TextBlock;
@@ -56,7 +55,7 @@ namespace PassKeeper.ViewModels
                             }
                         }
                     },
-                    Background = new SolidColorBrush(Color.FromArgb(255, 32, 41, 51)),
+                    Background = new SolidColorBrush(Color.FromArgb(255, 16, 23, 41)),
                     CloseButtonText = "Aceptar",
                 };
                 messageBox.ShowDialogAsync();
@@ -78,7 +77,7 @@ namespace PassKeeper.ViewModels
                         }
                     },
                 },
-                Background = new SolidColorBrush(Color.FromArgb(255, 32, 41, 51)),
+                Background = new SolidColorBrush(Color.FromArgb(255, 16, 23, 41)),
                 CloseButtonText = "Aceptar"
             };
             Icon = IconOptions[SelectedIcon].Name;
@@ -128,7 +127,7 @@ namespace PassKeeper.ViewModels
 
             Random random = new Random();
 
-            for (int i = 0; i < 25; i++)
+            for (int i = 0; i < 22; i++)
             {
                 password.Append(charPool[random.Next(charPool.Length)]);
             }
@@ -152,7 +151,7 @@ namespace PassKeeper.ViewModels
                         new TextBlock { Text = "Se perderán los cambios.", VerticalAlignment = VerticalAlignment.Center }
                     }
                 },
-                Background = new SolidColorBrush(Color.FromArgb(255, 32, 41, 51)),
+                Background = new SolidColorBrush(Color.FromArgb(255, 16, 23, 41)),
                 PrimaryButtonText = "Aceptar",
                 CloseButtonText = "Cancelar",
                 MinWidth = 300,

@@ -8,16 +8,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="SettingsPage"
-    d:DataContext="{d:DesignInstance local:SettingsPage,
-                                     IsDesignTimeCreatable=False}"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DataContext="{d:DesignInstance local:SettingsPage, IsDesignTimeCreatable=False}"
     Foreground="{DynamicResource TextFillColorPrimaryBrush}"
     mc:Ignorable="d">
     <Page.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
     </Page.Resources>
-    <Border>
+    <Border Background="#020616">
         <StackPanel>
             <TextBlock
             Margin="80,30,80,10"
@@ -31,7 +28,7 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Border Padding="30" Margin="0,0,30,0" Background="#2f3744" CornerRadius="10">
+                <Border Padding="30" Margin="0,0,30,0" Background="#213353" CornerRadius="10">
                     <StackPanel >
                         <ui:TextBlock FontFamily="Onest"  FontSize="20" FontWeight="Medium" Text="Problemas con la aplicación?"></ui:TextBlock>
                         <ui:TextBlock TextWrapping="Wrap" Margin="0,5,0,10" FontFamily="Onest"  FontSize="16" Foreground="#f2f2f2" Text="Contacta al soporte y completa el formulario. Podes hacerlo haciendo click en el botón"></ui:TextBlock>
@@ -42,7 +39,7 @@
                         </ui:HyperlinkButton>
                     </StackPanel>
                 </Border>
-                <Border Grid.Column="1" Padding="30" Background="#2f3744" CornerRadius="10">
+                <Border Grid.Column="1" Padding="30" Background="#213353" CornerRadius="10">
                     <StackPanel >
                         <ui:TextBlock FontFamily="Onest"  FontSize="20" FontWeight="Medium" Text="Necesitas una guia?"></ui:TextBlock>
                         <ui:TextBlock TextWrapping="Wrap" Margin="0,5,0,10" FontFamily="Onest"  FontSize="16" Foreground="#f2f2f2" Text="Puedes acceder a la guía detallada de PassKeeper haciendo click en el botón"></ui:TextBlock>

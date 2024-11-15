@@ -1,8 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using PassKeeper.Models;
-using PassKeeper.ViewModels.Windows;
-using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
 
 namespace PassKeeper.ViewModels.Pages
