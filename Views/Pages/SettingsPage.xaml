@@ -11,9 +11,6 @@
     d:DataContext="{d:DesignInstance local:SettingsPage, IsDesignTimeCreatable=False}"
     Foreground="{DynamicResource TextFillColorPrimaryBrush}"
     mc:Ignorable="d">
-    <Page.Resources>
-        <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
-    </Page.Resources>
     <Border Background="#020616">
         <StackPanel>
             <TextBlock
