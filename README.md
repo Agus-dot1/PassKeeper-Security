@@ -95,4 +95,4 @@ PassKeeper/
 ├── ViewModels/            # MVVM ViewModels for handling UI logic.
 ├── Views/                 # WPF Views for the application's UI components.
 ├── App.xaml               # Application entry point and settings.
-└── AppSettings.cs         # Main application window layout.
+└── AppSettings.cs         # User prefences.
