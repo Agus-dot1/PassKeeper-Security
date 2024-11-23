@@ -19,10 +19,10 @@ namespace PassKeeper.ViewModels.Pages
     public partial class PasswordViewModel : ObservableObject
     {
         public bool IsPasswordsNull => !FilteredPasswordsCollection.Any();
-        [ObservableProperty] public string? searchText;
-        private LoginWindowViewModel loginWindowViewModel = new LoginWindowViewModel();
-        public ObservableCollection<Passwords> PasswordsCollection { get; } = new ObservableCollection<Passwords>();
-        public ObservableCollection<Passwords> FilteredPasswordsCollection { get; } = new ObservableCollection<Passwords>();
+        [ObservableProperty] private string? searchText;
+        private readonly LoginWindowViewModel loginWindowViewModel = new LoginWindowViewModel();
+        public ObservableCollection<Passwords> PasswordsCollection { get; set; } = new ObservableCollection<Passwords>();
+        public ObservableCollection<Passwords> FilteredPasswordsCollection { get; set; } = new ObservableCollection<Passwords>();
 
 
         public PasswordViewModel()
@@ -31,16 +31,18 @@ namespace PassKeeper.ViewModels.Pages
             LoadPasswords();
         }
 
-        private void LoadPasswords()
+        public void LoadPasswords()
         {
-            if (File.Exists(loginWindowViewModel.currentUser.FilePath) && loginWindowViewModel.currentUser.Passwords.Count > 0)
+            if (File.Exists(loginWindowViewModel.currentUser.FilePath) && loginWindowViewModel.currentUser.Passwords.Count > 0) {
                 PasswordsCollection.Clear();
-            foreach (var password in loginWindowViewModel.currentUser.Passwords)
-            {
-                PasswordsCollection.Add(password);
+                foreach (var password in loginWindowViewModel.currentUser.Passwords)
+                {
+                    PasswordsCollection.Add(password);
+                }
             }
             FilterPasswords();
             OnPropertyChanged(nameof(IsPasswordsNull));
+            
         }
 
         private void FilterPasswords()
@@ -62,47 +64,66 @@ namespace PassKeeper.ViewModels.Pages
 
 
         [RelayCommand]
-        public void AddPassword()
+        private void AddPassword()
         {
-            AddPasswordWindow addPasswordWindow = new AddPasswordWindow();
-            AddPasswordViewModel addPasswordViewModel = new AddPasswordViewModel();
-
-            addPasswordViewModel.FilePath = loginWindowViewModel.currentUser.FilePath;
-            addPasswordWindow.DataContext = addPasswordViewModel;
-
-            addPasswordWindow.ShowDialog();
-
-            if (addPasswordViewModel.PasswordAdded == true)
+            try
             {
-                var newPassword = new Passwords
+                var addPasswordWindow = new AddPasswordWindow();
+                var addPasswordViewModel = new AddPasswordViewModel
                 {
-                    Id = PasswordsCollection.Count,
-                    Name = addPasswordViewModel.Name,
-                    Username = addPasswordViewModel.Username,
-                    Password = addPasswordViewModel.GeneratedPassword,
-                    Icon = addPasswordViewModel.Icon,
-                    Url = addPasswordViewModel.Url,
-                    Notes = addPasswordViewModel.Note
+                    FilePath = loginWindowViewModel.currentUser.FilePath
                 };
 
+                addPasswordWindow.DataContext = addPasswordViewModel;
 
-                loginWindowViewModel.currentUser.Passwords.Add(newPassword);
-                loginWindowViewModel.currentUser.SaveToFile();
-                PasswordsCollection.Add(newPassword);
+                addPasswordWindow.ShowDialog();
+
+                if (addPasswordViewModel.PasswordAdded == true)
+                {
+                    var newPassword = new Passwords
+                    {
+                        Id = PasswordsCollection.Count,
+                        Name = addPasswordViewModel.Name,
+                        Username = addPasswordViewModel.Username,
+                        Password = addPasswordViewModel.GeneratedPassword,
+                        Icon = addPasswordViewModel.Icon,
+                        Url = addPasswordViewModel.Url,
+                        Notes = addPasswordViewModel.Note
+                    };
+
+
+                    loginWindowViewModel.currentUser.Passwords.Add(newPassword);
+                    loginWindowViewModel.currentUser.SaveToFile();
+                    PasswordsCollection.Add(newPassword);
+                }
+                FilterPasswords();
+                OnPropertyChanged(nameof(IsPasswordsNull));
             }
-            FilterPasswords();
-            OnPropertyChanged(nameof(IsPasswordsNull));
+            catch (Exception ex)
+            {
+                var messageBox = new MessageBox
+                {
+                    Title = "Error creating the password",
+                    Content = new TextBlock
+                    {
+                        Text = $"Error creating the password: {ex.Message}",
+                    },
+                    Background = new SolidColorBrush(Color.FromArgb(255, 16, 23, 41)),
+                    CloseButtonText = "Accept"
+                };
+                messageBox.ShowDialogAsync();
+            }
         }
 
         [RelayCommand]
-        public static void CopyUrl(Passwords password)
+        private static void CopyUrl(Passwords password)
         {
             if (password.Url == null) return;
             Clipboard.SetText(password.Url);
         }
 
         [RelayCommand]
-        public static void CopyUsername(Passwords password)
+        private static void CopyUsername(Passwords password)
         {
             if (password.Username == null) return;
             Clipboard.SetText(password.Username);
@@ -110,90 +131,126 @@ namespace PassKeeper.ViewModels.Pages
 
 
         [RelayCommand]
-        public static void CopyPassword(Passwords password)
+        private static void CopyPassword(Passwords password)
         {
             if (password.Password == null) return;
             Clipboard.SetText(password.Password);
         }
 
 
-
         [RelayCommand]
-        public void EditPassword(Passwords password)
+        private void EditPassword(Passwords password)
         {
-            AddPasswordWindow addPasswordWindow = new AddPasswordWindow();
-            AddPasswordViewModel addPasswordViewModel = new AddPasswordViewModel();
-            ObservableCollection<SymbolIcon> IconOptions = Icons.IconOptions;
-
-            int icon = 0;
-            foreach (var iconOption in IconOptions)
+            try
             {
-                if (iconOption.Uid == password.Icon)
+                var addPasswordWindow = new AddPasswordWindow();
+                var addPasswordViewModel = new AddPasswordViewModel();
+                ObservableCollection<SymbolIcon> iconOptions = Icons.IconOptions;
+
+                var icon = 0;
+                foreach (var iconOption in iconOptions)
                 {
-                    icon = IconOptions.IndexOf(iconOption);
-                    break;
+                    if (iconOption.Uid == password.Icon)
+                    {
+                        icon = iconOptions.IndexOf(iconOption);
+                        break;
+                    }
                 }
+
+
+                iconOptions[icon].Name = password.Icon;
+                addPasswordViewModel.FilePath = loginWindowViewModel.currentUser.FilePath;
+                addPasswordViewModel.GeneratedPassword = password.Password;
+                addPasswordViewModel.Name = password.Name;
+                addPasswordViewModel.Username = password.Username;
+                addPasswordViewModel.Url = password.Url;
+                addPasswordViewModel.Note = password.Notes;
+                addPasswordWindow.DataContext = addPasswordViewModel;
+
+                addPasswordWindow.ShowDialog();
+
+                if (addPasswordViewModel.PasswordAdded)
+                {
+                    password.Id = password.Id;
+                    password.Name = addPasswordViewModel.Name;
+                    password.Username = addPasswordViewModel.Username;
+                    password.Password = addPasswordViewModel.GeneratedPassword;
+                    password.Icon = password.Icon == addPasswordViewModel.Icon ? iconOptions[icon].Name : addPasswordViewModel.Icon;
+                    password.Url = addPasswordViewModel.Url;
+                    password.Notes = addPasswordViewModel.Note;
+                    loginWindowViewModel.currentUser.SaveToFile();
+                }
+                LoadPasswords();
+                FilterPasswords();
             }
-
-
-            IconOptions[icon].Name = password.Icon;
-            addPasswordViewModel.FilePath = loginWindowViewModel.currentUser.FilePath;
-            addPasswordViewModel.GeneratedPassword = password.Password;
-            addPasswordViewModel.Name = password.Name;
-            addPasswordViewModel.Username = password.Username;
-            addPasswordViewModel.Url = password.Url;
-            addPasswordViewModel.Note = password.Notes;
-            addPasswordWindow.DataContext = addPasswordViewModel;
-
-            addPasswordWindow.ShowDialog();
-
-            if (addPasswordViewModel.PasswordAdded == true)
+            catch (Exception ex)
             {
-                password.Id = password.Id;
-                password.Name = addPasswordViewModel.Name;
-                password.Username = addPasswordViewModel.Username;
-                password.Password = addPasswordViewModel.GeneratedPassword;
-                if (password.Icon == addPasswordViewModel.Icon)
+                var messageBox = new MessageBox
                 {
-                    password.Icon = IconOptions[icon].Name;
-                }
-                else
-                {
-                    password.Icon = addPasswordViewModel.Icon;
-                }
-                password.Url = addPasswordViewModel.Url;
-                password.Notes = addPasswordViewModel.Note;
-                loginWindowViewModel.currentUser.SaveToFile();
+                    Title = "Error",
+                    Content = new TextBlock
+                    {
+                        Text = ex.Message,
+                        VerticalAlignment = VerticalAlignment.Center
+                    },
+                    Background = new SolidColorBrush(Color.FromArgb(255, 16, 23, 41)),
+                    CloseButtonText = "Accept"
+                };
+                messageBox.ShowDialogAsync();
             }
-            FilterPasswords();
         }
         [RelayCommand]
-        public void DeletePassword(Passwords password)
+        private void DeletePassword(Passwords password)
         {
             var messageBox = new MessageBox
             {
-                Title = "¿Seguro que quieres borrar?",
+                Title = "Are you sure you want to delete?",
                 Content = new StackPanel
                 {
                     Orientation = Orientation.Horizontal,
                     Children =
                     {
                         new SymbolIcon { Symbol = SymbolRegular.Warning12, Foreground = new SolidColorBrush(Colors.OrangeRed), FontSize = 24, Width = 20, Height = 28, Margin = new Thickness(0, 0, 10, 0) },
-                        new TextBlock { Text = "No se puede deshacer esta operación.", VerticalAlignment = VerticalAlignment.Center }
+                        new TextBlock { Text = "This action cannot be undone.", VerticalAlignment = VerticalAlignment.Center }
                     }
                 },
-                Background = new SolidColorBrush(Color.FromArgb(255, 32, 41, 51)),
-                PrimaryButtonText = "Borrar",
-                CloseButtonText = "Cancelar",
+                Background = new SolidColorBrush(Color.FromArgb(255, 16, 23, 41)),
+                PrimaryButtonText = "Delete",
+                CloseButtonText = "Cancel",
                 MinWidth = 300,
                 MinHeight = 100,
             };
             var result = messageBox.ShowDialogAsync();
             if (result.Result == MessageBoxResult.Primary)
             {
-                loginWindowViewModel.currentUser.Passwords.Remove(password);
-                loginWindowViewModel.currentUser.SaveToFile();
-                PasswordsCollection.Remove(password);
+                try
+                {
+                    loginWindowViewModel.currentUser.Passwords.Remove(password);
+                    loginWindowViewModel.currentUser.SaveToFile();
+                    PasswordsCollection.Remove(password);
+                }
+                catch (Exception ex)
+                {
+                    var messageBox2 = new MessageBox
+                    {
+                        Title = "Error deleting password",
+                        Content = new StackPanel
+                        {
+                            Orientation = Orientation.Horizontal,
+                            Children =
+                            {
+                                new TextBlock
+                                {
+                                    Text = $"Error deleting password: {ex.Message}",
+                                    VerticalAlignment = VerticalAlignment.Center
+                                }
+                            }
+                        },
+                        Background = new SolidColorBrush(Color.FromArgb(255, 16, 23, 41)),
+                        CloseButtonText = "Accept",
+                    };
+                    messageBox2.ShowDialogAsync();
+                }
             }
             FilterPasswords();
         }

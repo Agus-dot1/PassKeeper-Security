@@ -29,7 +29,6 @@
                 Foreground="#378bf3"
                 x:Name="TitleBar"
                 FontSize="24"
-                FontFamily="Onest"
                 FontWeight="Bold"
                 Height="50"
                 Title="PassKeeper"
@@ -45,7 +44,7 @@
                 Margin="0,50,0,0"
                 IsBackButtonVisible="Collapsed"
                 IsPaneToggleVisible="True"
-                OpenPaneLength="220"
+                OpenPaneLength="200"
                 PaneDisplayMode="Left"
                 MenuItemsSource="{Binding ViewModel.MenuItems, Mode=OneWay}"
                 FooterMenuItemsSource="{Binding ViewModel.FooterMenuItems, Mode=OneWay}">

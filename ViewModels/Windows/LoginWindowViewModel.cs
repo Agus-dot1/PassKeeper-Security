@@ -30,7 +30,7 @@ namespace PassKeeper.ViewModels.Windows
             string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "databases", "database.pks");
             currentUser = UserModel.LoadFromFile(dbPath) ?? new UserModel(new MasterKeyModel());
             IsNewUser = string.IsNullOrEmpty(currentUser.MasterKey.HashedKey);
-            CreateButtonContent = IsNewUser ? "Crear" : "Ingresar";
+            CreateButtonContent = IsNewUser ? "Create" : "Open Vault";
         }
 
 
@@ -39,19 +39,19 @@ namespace PassKeeper.ViewModels.Windows
         {
             var messageBox = new MessageBox
             {
-                Title = "¿Seguro que quieres crear una nueva clave maestra?",
+                Title = "Are you sure you want to create a new master key?",
                 Content = new StackPanel
                 {
                     Orientation = Orientation.Horizontal,
                     Children =
                     {
                         new SymbolIcon { Symbol = SymbolRegular.Warning12, Foreground = new SolidColorBrush(Colors.OrangeRed), FontSize = 24, Width = 20, Height = 28, Margin = new Thickness(0, 0, 10, 0) },
-                        new TextBlock { Text = "Se borrarán los datos actuales.", VerticalAlignment = VerticalAlignment.Center }
+                        new TextBlock { Text = "Current data will be deleted.", VerticalAlignment = VerticalAlignment.Center }
                     }
                 },
                 Background = new SolidColorBrush(Color.FromArgb(255, 16, 23, 41)),
-                PrimaryButtonText = "Aceptar",
-                CloseButtonText = "Cancelar",
+                PrimaryButtonText = "Accept",
+                CloseButtonText = "Cancel",
                 MinWidth = 300,
                 MinHeight = 100,
             };
@@ -66,14 +66,14 @@ namespace PassKeeper.ViewModels.Windows
                     try
                     {
                         await Task.Run(() => File.Delete(dbPath));
-                        SuccessMessage = "Datos anteriores eliminados con éxito.";
+                        SuccessMessage = "Previous data deleted successfully.";
                         SuccessMessageVisibility = true;
                         ErrorMessageVisibility = false;
                         MasterKey = RepeatMKey = string.Empty;
                     }
                     catch (Exception ex)
                     {
-                        ErrorMessage = $"Error al eliminar datos anteriores: {ex.Message}";
+                        ErrorMessage = $"Error deleting previous data: {ex.Message}";
                         ErrorMessageVisibility = true;
                         SuccessMessageVisibility = false;
                         return;
@@ -82,7 +82,7 @@ namespace PassKeeper.ViewModels.Windows
 
                 currentUser = new UserModel(new MasterKeyModel());
                 IsNewUser = true;
-                CreateButtonContent = "Crear";
+                CreateButtonContent = "Create";
                 MasterKey = RepeatMKey = string.Empty;
             }
         }
@@ -94,7 +94,7 @@ namespace PassKeeper.ViewModels.Windows
             {
                 if (string.IsNullOrEmpty(MasterKey) || string.IsNullOrEmpty(RepeatMKey))
                 {
-                    ErrorMessage = "No se pueden dejar campos vacíos.";
+                    ErrorMessage = "Fields cannot be left empty.";
                     ErrorMessageVisibility = true;
                     SuccessMessageVisibility = false;
                     MasterKey = RepeatMKey = string.Empty;
@@ -103,7 +103,7 @@ namespace PassKeeper.ViewModels.Windows
 
                 if (MasterKey != RepeatMKey)
                 {
-                    ErrorMessage = "Las claves no coinciden.";
+                    ErrorMessage = "The keys do not match.";
                     ErrorMessageVisibility = true;
                     SuccessMessageVisibility = false;
                     MasterKey = RepeatMKey = string.Empty;
@@ -114,7 +114,7 @@ namespace PassKeeper.ViewModels.Windows
                 {
                     currentUser.MasterKey.SetMasterKey(MasterKey);
 
-                    SuccessMessage = "Clave maestra creada con éxito.";
+                    SuccessMessage = "Master key created successfully.";
                     SuccessMessageVisibility = true;
                     ErrorMessageVisibility = false;
 
@@ -127,7 +127,7 @@ namespace PassKeeper.ViewModels.Windows
                 }
                 catch (Exception ex)
                 {
-                    ErrorMessage = $"Error al guardar la clave: {ex.Message}";
+                    ErrorMessage = $"Error saving key: {ex.Message}";
                     ErrorMessageVisibility = true;
                     SuccessMessageVisibility = false;
                 }
@@ -139,7 +139,7 @@ namespace PassKeeper.ViewModels.Windows
 
                 if (!isCorrect)
                 {
-                    ErrorMessage = "No se encontró el archivo de la clave o la clave es incorrecta.";
+                    ErrorMessage = "The key file was not found or the key is incorrect.";
                     ErrorMessageVisibility = true;
                     SuccessMessageVisibility = false;
                     MasterKey = RepeatMKey = string.Empty;
@@ -147,7 +147,7 @@ namespace PassKeeper.ViewModels.Windows
                 }
                 else if (isCorrect)
                 {
-                    SuccessMessage = "Clave maestra correcta.";
+                    SuccessMessage = "Correct master key.";
                     SuccessMessageVisibility = true;
                     ErrorMessageVisibility = false;
 
@@ -158,7 +158,7 @@ namespace PassKeeper.ViewModels.Windows
                 }
                 else if (string.IsNullOrWhiteSpace(MasterKey))
                 {
-                    ErrorMessage = "No se pueden dejar campos vacíos.";
+                    ErrorMessage = "Fields cannot be left blank.";
                     ErrorMessageVisibility = true;
                     SuccessMessageVisibility = false;
                     return;

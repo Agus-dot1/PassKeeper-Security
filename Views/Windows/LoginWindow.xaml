@@ -4,7 +4,6 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PassKeeper.Views.Windows"
         xmlns:conv="clr-namespace:PassKeeper.Helpers" 
         xmlns:windows="clr-namespace:PassKeeper.ViewModels.Windows" 
         d:DataContext="{d:DesignInstance Type=windows:LoginWindowViewModel}"
@@ -34,44 +33,43 @@
                 </ui:Button.Icon>
             </ui:Button>
             
-            
-            <!-- Vista para Nuevo Usuario -->
+
             <StackPanel Grid.Row="1" Visibility="{Binding IsNewUser, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Border CornerRadius="100" Background="#15223e" Padding="10" HorizontalAlignment="Center">
                     <ui:SymbolIcon Symbol="LockShield48" FontSize="90" Foreground="#378bf3"/>
                 </Border>
                 <TextBlock FontSize="32" FontWeight="Bold"  HorizontalAlignment="Center">
                     <TextBlock.Inlines>
-                        <Run Text="Creá tu" Foreground="#f2f2f2"></Run>
-                        <Run Text="clave maestra" Foreground="#378bf3" />
+                        <Run Text="Create" Foreground="#f2f2f2"></Run>
+                        <Run Text="your master key" Foreground="#378bf3" />
                     </TextBlock.Inlines>
                 </TextBlock>
                 <TextBlock 
                      TextWrapping="Wrap" FontSize="16" Margin="0,10,0,10" TextAlignment="Center">
                     <TextBlock.Inlines>
-                        <Run Foreground="#b4c5dd" Text="Esta clave debe ser ÚNICA y se recomienda que sea guardada en formato físico."/>
-                        <Run Foreground="#b4c5dd" TextDecorations="Underline" Text="Una vez perdida no se podrá recuperar."/>
+                        <Run Foreground="#b4c5dd" Text="This key must be UNIQUE and it is recommended to be stored in physical format."/>
+                        <Run Foreground="#b4c5dd" TextDecorations="Underline" Text="Once lost, it cannot be recovered."/>
                     </TextBlock.Inlines>
                 </TextBlock>
             </StackPanel>
 
-            <!-- Vista para Ingreso de Usuario -->
+
             <StackPanel Grid.Row="1" Margin="0,20,0,0" Visibility="{Binding IsNewUser, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
                 <ui:SymbolIcon Symbol="LockShield48" FontSize="120" Foreground="#378bf3"  Margin="0,0,0,10"/>
                 <TextBlock FontSize="32" FontWeight="Bold"  HorizontalAlignment="Center" Foreground="#378bf3">
-                    Iniciar sesión
+                    Log in
                 </TextBlock>
                 <TextBlock 
                     TextWrapping="Wrap" FontSize="16" Margin="0,10,0,20" TextAlignment="Center">
                     <TextBlock.Inlines>
-                        <Run Foreground="#f4f4f4" Text="Ingrese su clave maestra para poder iniciar sesión."/>
+                        <Run Foreground="#f4f4f4" Text="Enter your master key to log in."/>
                     </TextBlock.Inlines>
                 </TextBlock>
             </StackPanel>
 
-            <!-- Inputs para la clave -->
+
             <StackPanel Grid.Row="2" VerticalAlignment="Center">
-                <Label Content="Clave maestra" Margin="0,10,0,0" FontWeight="DemiBold"  Foreground="#f2f2f2"/>
+                <Label Content="Master Key" Margin="0,10,0,0" FontWeight="DemiBold"  Foreground="#f2f2f2"/>
                 <ui:PasswordBox x:Name="MasterKeyInput" 
                                 Background="#1f293a"
                                 Foreground="White"
@@ -82,7 +80,7 @@
                 </ui:PasswordBox>
 
                 <Label 
-                    Content="Repite tu clave" 
+                    Content="Repeat your master key" 
                     Margin="0,10,0,0" 
                     FontWeight="DemiBold" Foreground="#f2f2f2"
                     Visibility="{Binding IsNewUser, Converter={StaticResource BoolToVisibilityConverter}}"/>
@@ -94,10 +92,11 @@
                 <TextBlock Text="{Binding ErrorMessage}" 
                                 Foreground="#db2d3c" 
                                 TextWrapping="Wrap"
+                                Margin="0,5,0,5"
                                 Visibility="{Binding ErrorMessageVisibility}"/>
                 <TextBlock Text="{Binding SuccessMessage}" 
                                 Foreground="#358b5b" 
-                                Margin="0,5,0,0" 
+                                Margin="0,5,0,5" 
                                 TextWrapping="Wrap"
                                 Visibility="{Binding SuccessMessageVisibility}"/>
             </StackPanel>
@@ -115,14 +114,14 @@
                     MouseOverBorderBrush="#3461b3"
                     Cursor="Hand"
                     />
-                <ui:Button Padding="5" BorderThickness="0" Background="Transparent" Foreground="#578ed4" MouseOverBackground="Transparent" Cursor="Hand" Command="{Binding TriggerCreateCommand}" HorizontalAlignment="Center" Margin="0,5,0,10" Content="Crear una nueva llave maestra?"/>
+                <ui:Button Padding="5" BorderThickness="0" Background="Transparent" Foreground="#578ed4" MouseOverBackground="Transparent" Cursor="Hand" Command="{Binding TriggerCreateCommand}" HorizontalAlignment="Center" Margin="0,5,0,10" Content="Create a new master key?"/>
                 <TextBlock 
             TextWrapping="Wrap" FontSize="16" TextAlignment="Center">
                     <TextBlock.Inlines>
-                        <Run Foreground="#b4c5dd" Text="Problemas al iniciar sesión?"/>
+                        <Run Foreground="#b4c5dd" Text="Trouble logging in?"/>
                     </TextBlock.Inlines>
                 </TextBlock>
-                <ui:HyperlinkButton HorizontalAlignment="Center" Foreground="#578ed4" Cursor="Hand" NavigateUri="https://passkeeper-security.vercel.app/detailedguide">Consulta la guía detallada</ui:HyperlinkButton>
+                <ui:HyperlinkButton HorizontalAlignment="Center" Foreground="#578ed4" Cursor="Hand" NavigateUri="https://passkeeper-security.vercel.app/detailedguide">Consult the detailed guide</ui:HyperlinkButton>
 
 
 

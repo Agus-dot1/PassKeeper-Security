@@ -8,6 +8,15 @@
     Startup="OnStartup">
     <Application.Resources>
         <ResourceDictionary>
+            <Style TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="/PassKeeper;component/Assets/Fonts/#Inter" />
+            </Style>
+            <Style TargetType="ui:TextBlock">
+                <Setter Property="FontFamily" Value="/PassKeeper;component/Assets/Fonts/#Inter" />
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="FontFamily" Value="/PassKeeper;component/Assets/Fonts/#Inter" />
+            </Style>
             <ResourceDictionary.MergedDictionaries>
                 <ui:ThemesDictionary Theme="Dark" />
                 <ui:ControlsDictionary />

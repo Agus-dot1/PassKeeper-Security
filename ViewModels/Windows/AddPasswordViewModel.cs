@@ -42,7 +42,7 @@ namespace PassKeeper.ViewModels
             {
                 var messageBox = new MessageBox
                 {
-                    Title = "Error al crear la contraseña",
+                    Title = "Error creating the password",
                     Content = new StackPanel
                     {
                         Orientation = Orientation.Horizontal,
@@ -50,13 +50,13 @@ namespace PassKeeper.ViewModels
                         {
                             new TextBlock
                             {
-                                Text = "Usuario y contraseña son requeridos",
+                                Text = "Username and password are required",
                                 VerticalAlignment = VerticalAlignment.Center
                             }
                         }
                     },
                     Background = new SolidColorBrush(Color.FromArgb(255, 16, 23, 41)),
-                    CloseButtonText = "Aceptar",
+                    CloseButtonText = "Accept",
                 };
                 messageBox.ShowDialogAsync();
                 return;
@@ -64,7 +64,7 @@ namespace PassKeeper.ViewModels
 
             var messageBox2 = new MessageBox
             {
-                Title = "Contraseña creada con exito",
+                Title = "Password created successfully.",
                 Content = new StackPanel
                 {
                     Orientation = Orientation.Horizontal,
@@ -72,13 +72,13 @@ namespace PassKeeper.ViewModels
                     {
                         new TextBlock
                         {
-                            Text = "La contraseña ha sido creada con exito",
+                            Text = "The password has been created successfully.",
                             VerticalAlignment = VerticalAlignment.Center
                         }
                     },
                 },
                 Background = new SolidColorBrush(Color.FromArgb(255, 16, 23, 41)),
-                CloseButtonText = "Aceptar"
+                CloseButtonText = "Accept"
             };
             Icon = IconOptions[SelectedIcon].Name;
             PasswordAdded = true;
@@ -141,19 +141,19 @@ namespace PassKeeper.ViewModels
         {
             var messageBox = new MessageBox
             {
-                Title = "¿Seguro que quieres cancelar?",
+                Title = "Are you sure you want to cancel?",
                 Content = new StackPanel
                 {
                     Orientation = Orientation.Horizontal,
                     Children =
                     {
                         new SymbolIcon { Symbol = SymbolRegular.Warning12, Foreground = new SolidColorBrush(Colors.OrangeRed), FontSize = 24, Width = 20, Height = 28, Margin = new Thickness(0, 0, 10, 0) },
-                        new TextBlock { Text = "Se perderán los cambios.", VerticalAlignment = VerticalAlignment.Center }
+                        new TextBlock { Text = "Changes will be lost.", VerticalAlignment = VerticalAlignment.Center }
                     }
                 },
                 Background = new SolidColorBrush(Color.FromArgb(255, 16, 23, 41)),
-                PrimaryButtonText = "Aceptar",
-                CloseButtonText = "Cancelar",
+                PrimaryButtonText = "Accept",
+                CloseButtonText = "Cancel",
                 MinWidth = 300,
                 MinHeight = 100,
             };

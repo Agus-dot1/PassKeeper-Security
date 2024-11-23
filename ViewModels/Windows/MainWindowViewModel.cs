@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using PassKeeper.ViewModels.Pages;
 using PassKeeper.Views.Pages;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -15,7 +16,13 @@ namespace PassKeeper.ViewModels.Windows
         {
             new NavigationViewItem()
             {
-                Content = "Contraseñas",
+                Content = "Dashboard",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.Home16 },
+                TargetPageType = typeof(DashboardPage)
+            },
+            new NavigationViewItem()
+            {
+                Content = "Passwords",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Key16 },
                 TargetPageType = typeof(PasswordsPage)
             },
@@ -26,7 +33,7 @@ namespace PassKeeper.ViewModels.Windows
         {
             new NavigationViewItem()
             {
-                Content = "Configuracion",
+                Content = "Settings",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Settings24 },
                 TargetPageType = typeof(SettingsPage)
             }
@@ -35,7 +42,7 @@ namespace PassKeeper.ViewModels.Windows
         [ObservableProperty]
         private ObservableCollection<MenuItem> _trayMenuItems = new()
         {
-            new MenuItem { Header = "Contraseñas", Tag = "tray_Contraseñas" }
+            new MenuItem { Header = "Passwords", Tag = "tray_Passwords" }
         };
     }
 }
