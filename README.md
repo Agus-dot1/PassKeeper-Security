@@ -88,10 +88,11 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 ```plaintext
 PassKeeper/
+├── Assets/                # Images or custom fonts.
+├── Helpers/               # Reusable converters.
 ├── Models/                # Data models for storing password information.
+├── Services/              # Backend services for encryption, storage, etc.
 ├── ViewModels/            # MVVM ViewModels for handling UI logic.
 ├── Views/                 # WPF Views for the application's UI components.
-├── Services/              # Backend services for encryption, storage, etc.
-├── Resources/             # Styles, themes, and other resources.
 ├── App.xaml               # Application entry point and settings.
-└── MainWindow.xaml        # Main application window layout.
+└── AppSettings.cs         # User prefences.
