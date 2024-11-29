@@ -1,30 +1,31 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace PassKeeper.Models
+namespace PassKeeper.Models;
+
+public class MasterKeyModel
 {
-    public class MasterKeyModel
+    public string? HashedKey { get; set; }
+
+    public void SetMasterKey(string masterKeyText)
     {
-        public string? HashedKey { get; set; }
+        HashedKey = Hash(masterKeyText);
+    }
 
-        public void SetMasterKey(string MasterKeyText)
-        {
-            HashedKey = Hash(MasterKeyText);
-        }
-        public void InitializeHashedKey(string hashedKeyFromFile)
-        {
-            HashedKey = hashedKeyFromFile;
-        }
-        public bool CheckMasterKey(string MasterKeyText)
-        {
-            if (MasterKeyText == null  || MasterKeyText == "") return false;
-            return HashedKey == Hash(MasterKeyText);
-        }
+    public void InitializeHashedKey(string hashedKeyFromFile)
+    {
+        HashedKey = hashedKeyFromFile;
+    }
 
-        private static string Hash(string MasterKeyText)
-        {
-            byte[] data = SHA256.HashData(Encoding.UTF8.GetBytes(MasterKeyText));
-            return BitConverter.ToString(data).Replace("-", "").ToLower();
-        }
+    public bool CheckMasterKey(string masterKeyText)
+    {
+        if (masterKeyText == null || masterKeyText == "") return false;
+        return HashedKey == Hash(masterKeyText);
+    }
+
+    private static string Hash(string MasterKeyText)
+    {
+        var data = SHA256.HashData(Encoding.UTF8.GetBytes(MasterKeyText));
+        return BitConverter.ToString(data).Replace("-", "").ToLower();
     }
 }

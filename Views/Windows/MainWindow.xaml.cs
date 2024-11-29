@@ -7,9 +7,6 @@ using Wpf.Ui.Controls;
 
 namespace PassKeeper.Views.Windows
 {
-    /// <summary>
-    /// Lógica de interacción para MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : INavigationWindow
     {
         public MainWindowViewModel ViewModel { get; }
@@ -52,8 +49,7 @@ namespace PassKeeper.Views.Windows
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
-
-            // Make sure that closing this window will begin the process of closing the application.
+            
             Application.Current.Shutdown();
         }
 

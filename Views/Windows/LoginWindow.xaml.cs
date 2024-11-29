@@ -4,9 +4,6 @@ using System.Windows.Input;
 
 namespace PassKeeper.Views.Windows
 {
-    /// <summary>
-    /// Lógica de interacción para LoginWindow.xaml
-    /// </summary>
     public partial class LoginWindow : Window
     {
         public LoginWindow()
@@ -20,6 +17,5 @@ namespace PassKeeper.Views.Windows
             if (e.LeftButton == MouseButtonState.Pressed)
                 DragMove();
         }
-
     }
 }

@@ -1,75 +1,66 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.Json;
-using Wpf.Ui.Appearance;
 
-namespace PassKeeper.Models
+namespace PassKeeper.Models;
+
+public class UserModel
 {
-    public class UserModel
+    public string FilePath { get; set; }
+    public MasterKeyModel MasterKey { get; set; }
+    public ObservableCollection<PasswordModel> Passwords { get; set; }
+
+
+    public UserModel(MasterKeyModel masterKey)
     {
-        public string FilePath { get; set; }
-        public MasterKeyModel MasterKey { get; set; }
-        public ObservableCollection<Passwords> Passwords { get; set; }
+        var dbDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "databases");
+        FilePath = Path.Combine(dbDirectory, "database.pks");
+        Directory.CreateDirectory(dbDirectory);
 
-        
+        MasterKey = masterKey;
+        Passwords = new ObservableCollection<PasswordModel>();
+    }
 
+    public void AddPassword(PasswordModel passwordModel)
+    {
+        Passwords.Add(passwordModel);
+        SaveToFile();
+    }
 
-        public UserModel(MasterKeyModel masterKey)
+    public void RemovePassword(PasswordModel passwordModel)
+    {
+        Passwords.Remove(passwordModel);
+        SaveToFile();
+    }
+
+    public void SaveToFile()
+    {
+        try
         {
-            string dbDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "databases");
-            FilePath = Path.Combine(dbDirectory, "database.pks");
-            Directory.CreateDirectory(dbDirectory);
-
-            MasterKey = masterKey;
-            Passwords = new ObservableCollection<Passwords>();
+            var jsonData = JsonSerializer.Serialize(this);
+            File.WriteAllText(FilePath, jsonData);
         }
-
-        public void AddPassword(Passwords password)
+        catch (Exception ex)
         {
-            Passwords.Add(password);
-            SaveToFile();
+            Console.WriteLine($"Error saving to file: {ex.Message}");
         }
-        public void RemovePassword(Passwords password)
+    }
+
+    public static UserModel? LoadFromFile(string filePath)
+    {
+        if (!File.Exists(filePath)) return null;
+
+
+        try
         {
-            Passwords.Remove(password);
-            SaveToFile();
+            var jsonData = File.ReadAllText(filePath);
+            var user = JsonSerializer.Deserialize<UserModel>(jsonData);
+            return user;
         }
-
-        public void SaveToFile()
+        catch (Exception ex)
         {
-            try
-            {
-                string jsonData = JsonSerializer.Serialize(this);
-                File.WriteAllText(FilePath, jsonData);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al guardar el archivo: {ex.Message}");
-            }
+            Console.WriteLine($"Error loading from file: {ex.Message}");
+            return null;
         }
-
-        public static UserModel? LoadFromFile(string filePath)
-        {
-            if(!File.Exists(filePath)) return null;
-
-
-            try
-            {
-                string jsonData = File.ReadAllText(filePath);
-                UserModel? user = JsonSerializer.Deserialize<UserModel>(jsonData);
-                return user;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al cargar el archivo: {ex.Message}");
-                return null;
-            }
-        }
-
-
-
-
-
     }
 }

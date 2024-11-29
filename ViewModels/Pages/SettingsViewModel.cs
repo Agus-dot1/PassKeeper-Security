@@ -5,10 +5,10 @@ namespace PassKeeper.ViewModels.Pages
 {
     public partial class SettingsViewModel : ObservableObject, INavigationAware
     {
-        private bool _isInitialized = false;
+        private bool _isInitialized;
 
         [ObservableProperty]
-        private string _appVersion = String.Empty;
+        private string _appVersion = string.Empty;
 
         public void OnNavigatedTo()
         {
@@ -23,12 +23,5 @@ namespace PassKeeper.ViewModels.Pages
             AppVersion = $"PassKeeper v1.0.0";
             _isInitialized = true;
         }
-
-        private string GetAssemblyVersion()
-        {
-            return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString()
-                ?? String.Empty;
-        }
-
     }
 }

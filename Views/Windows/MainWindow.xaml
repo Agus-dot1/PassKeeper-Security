@@ -17,37 +17,30 @@
                  mc:Ignorable="d"
                  Title="PassKeeper">
     <Window.Resources>
-        <DataTemplate x:Key="NavigationItemTemplate">
-            <StackPanel Orientation="Horizontal">
-                <ui:SymbolIcon Symbol="{Binding Icon}" />
-                <TextBlock Text="{Binding Content}" FontSize="24" Margin="5,0" VerticalAlignment="Center"/>
-            </StackPanel>
-        </DataTemplate>
     </Window.Resources>
     <Grid Background="#101729">
         <ui:TitleBar
-                Foreground="#378bf3"
-                x:Name="TitleBar"
-                FontSize="24"
-                FontWeight="Bold"
-                Height="50"
-                Title="PassKeeper"
-                >
+            Foreground="#378bf3"
+            x:Name="TitleBar"
+            FontSize="24"
+            FontWeight="Bold"
+            Height="50"
+            Title="PassKeeper">
             <ui:TitleBar.Icon>
-                <ui:SymbolIcon Foreground="#378bf3" Symbol="LockClosed12" Margin="0,-4,0,-2" Width="20"/>
+                <ui:SymbolIcon Foreground="#378bf3" Symbol="LockClosed12" Margin="0,-4,0,-2" Width="20" />
             </ui:TitleBar.Icon>
         </ui:TitleBar>
 
         <ui:NavigationView
-                x:Name="RootNavigation"
-                FrameMargin="0"
-                Margin="0,50,0,0"
-                IsBackButtonVisible="Collapsed"
-                IsPaneToggleVisible="True"
-                OpenPaneLength="200"
-                PaneDisplayMode="Left"
-                MenuItemsSource="{Binding ViewModel.MenuItems, Mode=OneWay}"
-                FooterMenuItemsSource="{Binding ViewModel.FooterMenuItems, Mode=OneWay}">
+            x:Name="RootNavigation"
+            FrameMargin="0"
+            Margin="0,50,0,0"
+            IsBackButtonVisible="Collapsed"
+            IsPaneToggleVisible="True"
+            OpenPaneLength="200"
+            PaneDisplayMode="Left"
+            MenuItemsSource="{Binding ViewModel.MenuItems, Mode=OneWay}"
+            FooterMenuItemsSource="{Binding ViewModel.FooterMenuItems, Mode=OneWay}">
             <ui:NavigationView.ContentOverlay>
                 <Grid>
                     <ui:SnackbarPresenter x:Name="SnackbarPresenter" />

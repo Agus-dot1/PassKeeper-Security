@@ -13,21 +13,24 @@
     <Border Background="#020616">
         <StackPanel>
             <TextBlock
-            Margin="80,30,80,10"
-            FontSize="20"
-            FontWeight="Medium"
-            Text="Settings" />
+                Margin="80,30,80,10"
+                FontSize="20"
+                FontWeight="Medium"
+                Text="Settings" />
 
             <Grid Margin="80,30,80,10">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Border Padding="30" Margin="0,0,30,0" Background="#213353" CornerRadius="10">
-                    <StackPanel >
-                        <ui:TextBlock FontSize="20" FontWeight="Medium" Text="Trouble with the app?"></ui:TextBlock>
-                        <ui:TextBlock TextWrapping="Wrap" Margin="0,5,0,10"  FontSize="16" Foreground="#f2f2f2" Text="Contact support and fill out the form. You can do this by clicking the button."></ui:TextBlock>
-                        <ui:HyperlinkButton NavigateUri="https://passkeeper-security.vercel.app/support" VerticalAlignment="Bottom" FontSize="16" Foreground="#378bf3" HorizontalAlignment="Center">
+                    <StackPanel>
+                        <ui:TextBlock FontSize="20" FontWeight="Medium" Text="Trouble with the app?" />
+                        <ui:TextBlock TextWrapping="Wrap" Margin="0,5,0,10" FontSize="16" Foreground="#f2f2f2"
+                                      Text="Contact support and fill out the form. You can do this by clicking the button." />
+                        <ui:HyperlinkButton NavigateUri="https://passkeeper-security.vercel.app/support"
+                                            VerticalAlignment="Bottom" FontSize="16" Foreground="#378bf3"
+                                            HorizontalAlignment="Center">
                             <ui:HyperlinkButton.Content>
                                 <TextBlock FontSize="16" Text="Contact support" />
                             </ui:HyperlinkButton.Content>
@@ -35,10 +38,13 @@
                     </StackPanel>
                 </Border>
                 <Border Grid.Column="1" Padding="30" Background="#213353" CornerRadius="10">
-                    <StackPanel >
-                        <ui:TextBlock  FontSize="20" FontWeight="Medium" Text="You need a guide?"></ui:TextBlock>
-                        <ui:TextBlock TextWrapping="Wrap" Margin="0,5,0,10"  FontSize="16" Foreground="#f2f2f2" Text="You can access the detailed PassKeeper guide by clicking the button."></ui:TextBlock>
-                        <ui:HyperlinkButton NavigateUri="https://passkeeper-security.vercel.app/detailedguide" VerticalAlignment="Bottom" FontSize="16" Foreground="#378bf3" HorizontalAlignment="Center">
+                    <StackPanel>
+                        <ui:TextBlock FontSize="20" FontWeight="Medium" Text="You need a guide?" />
+                        <ui:TextBlock TextWrapping="Wrap" Margin="0,5,0,10" FontSize="16" Foreground="#f2f2f2"
+                                      Text="You can access the detailed PassKeeper guide by clicking the button." />
+                        <ui:HyperlinkButton NavigateUri="https://passkeeper-security.vercel.app/detailedguide"
+                                            VerticalAlignment="Bottom" FontSize="16" Foreground="#378bf3"
+                                            HorizontalAlignment="Center">
                             <ui:HyperlinkButton.Content>
                                 <TextBlock FontSize="16" Text="Detailed guide" />
                             </ui:HyperlinkButton.Content>
@@ -46,7 +52,8 @@
                     </StackPanel>
                 </Border>
             </Grid>
-            <TextBlock Margin="0,100,0,0" HorizontalAlignment="Center" Text="{Binding ViewModel.AppVersion, Mode=OneWay}" />
+            <TextBlock Margin="0,100,0,0" HorizontalAlignment="Center"
+                       Text="{Binding ViewModel.AppVersion, Mode=OneWay}" />
         </StackPanel>
     </Border>
 </Page>

@@ -1,11 +1,9 @@
 ﻿using PassKeeper.ViewModels;
 using System.Windows;
+using AddPasswordViewModel = PassKeeper.ViewModels.Windows.AddPasswordViewModel;
 
 namespace PassKeeper.Views.Windows
 {
-    /// <summary>
-    /// Lógica de interacción para AddPassword.xaml
-    /// </summary>
     public partial class AddPasswordWindow : Window
     {
         public AddPasswordWindow()
@@ -17,7 +15,7 @@ namespace PassKeeper.Views.Windows
         private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
                 if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
-                DragMove();
+                    DragMove();
         }
     }
 }
