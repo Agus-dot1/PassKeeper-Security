@@ -16,12 +16,6 @@ namespace PassKeeper.ViewModels.Windows
         {
             new NavigationViewItem()
             {
-                Content = "Dashboard",
-                Icon = new SymbolIcon { Symbol = SymbolRegular.Home16 },
-                TargetPageType = typeof(DashboardPage)
-            },
-            new NavigationViewItem()
-            {
                 Content = "Passwords",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Key16 },
                 TargetPageType = typeof(PasswordsPage)

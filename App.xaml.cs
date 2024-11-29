@@ -13,6 +13,7 @@ using PassKeeper.ViewModels;
 using PassKeeper.Services;
 using PassKeeper.ViewModels.Pages;
 using Wpf.Ui.Appearance;
+using AddPasswordViewModel = PassKeeper.ViewModels.Windows.AddPasswordViewModel;
 
 namespace PassKeeper
 {
@@ -58,8 +59,6 @@ namespace PassKeeper
                 //Pages
                 services.AddSingleton<AddPasswordWindow>();
                 services.AddSingleton<AddPasswordViewModel>();
-                services.AddSingleton<DashboardPage>();
-                services.AddSingleton<DashboardViewModel>();
                 services.AddSingleton<PasswordsPage>();
                 services.AddSingleton<PasswordViewModel>();
                 services.AddSingleton<SettingsPage>();
@@ -95,7 +94,7 @@ namespace PassKeeper
            
             _host.Services.GetService<LoginWindowViewModel>();
             _host.Services.GetService<MainWindowViewModel>();
-            LoginWindow loginWindow = _host.Services.GetRequiredService<LoginWindow>();
+            var loginWindow = _host.Services.GetRequiredService<LoginWindow>();
             loginWindow.ShowDialog();
         }
 

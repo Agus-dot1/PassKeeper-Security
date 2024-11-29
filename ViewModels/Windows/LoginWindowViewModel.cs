@@ -10,26 +10,28 @@ using Wpf.Ui.Controls;
 using MessageBox = Wpf.Ui.Controls.MessageBox;
 using MessageBoxResult = Wpf.Ui.Controls.MessageBoxResult;
 using TextBlock = Wpf.Ui.Controls.TextBlock;
+using PassKeeper.Helpers;
 
 namespace PassKeeper.ViewModels.Windows
 {
     public partial class LoginWindowViewModel : ObservableObject
     {
-        public UserModel currentUser;
-        [ObservableProperty] private string masterKey;
-        [ObservableProperty] private string repeatMKey;
-        [ObservableProperty] public bool isNewUser;
-        [ObservableProperty] private string? createButtonContent;
-        [ObservableProperty] private string? errorMessage;
-        [ObservableProperty] private string? successMessage;
-        [ObservableProperty] private bool errorMessageVisibility;
-        [ObservableProperty] private bool successMessageVisibility;
+        public UserModel CurrentUser;
+        [ObservableProperty] private string _email;
+        [ObservableProperty] private string _masterKey;
+        [ObservableProperty] private string _repeatMKey;
+        [ObservableProperty] private bool _isNewUser;
+        [ObservableProperty] private string? _createButtonContent;
+        [ObservableProperty] private string? _errorMessage;
+        [ObservableProperty] private string? _successMessage;
+        [ObservableProperty] private bool _errorMessageVisibility;
+        [ObservableProperty] private bool _successMessageVisibility;
 
         public LoginWindowViewModel()
         {
             string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "databases", "database.pks");
-            currentUser = UserModel.LoadFromFile(dbPath) ?? new UserModel(new MasterKeyModel());
-            IsNewUser = string.IsNullOrEmpty(currentUser.MasterKey.HashedKey);
+            CurrentUser = UserModel.LoadFromFile(dbPath) ?? new UserModel(new MasterKeyModel());
+            IsNewUser = CurrentUser.IsRegistered;
             CreateButtonContent = IsNewUser ? "Create" : "Open Vault";
         }
 
@@ -37,16 +39,22 @@ namespace PassKeeper.ViewModels.Windows
         [RelayCommand]
         private async Task TriggerCreate()
         {
+            if (IsNewUser)
+            {
+                IsNewUser = false;
+                CreateButtonContent = "Open Vault";
+                return;
+            }
             var messageBox = new MessageBox
             {
-                Title = "Are you sure you want to create a new master key?",
+                Title = "Create a new account",
                 Content = new StackPanel
                 {
                     Orientation = Orientation.Horizontal,
                     Children =
                     {
                         new SymbolIcon { Symbol = SymbolRegular.Warning12, Foreground = new SolidColorBrush(Colors.OrangeRed), FontSize = 24, Width = 20, Height = 28, Margin = new Thickness(0, 0, 10, 0) },
-                        new TextBlock { Text = "Current data will be deleted.", VerticalAlignment = VerticalAlignment.Center }
+                        new TextBlock { Text = "Are you sure you want to create a new account?", VerticalAlignment = VerticalAlignment.Center }
                     }
                 },
                 Background = new SolidColorBrush(Color.FromArgb(255, 16, 23, 41)),
@@ -80,7 +88,7 @@ namespace PassKeeper.ViewModels.Windows
                     }
                 }
 
-                currentUser = new UserModel(new MasterKeyModel());
+                CurrentUser = new UserModel(new MasterKeyModel());
                 IsNewUser = true;
                 CreateButtonContent = "Create";
                 MasterKey = RepeatMKey = string.Empty;
@@ -88,19 +96,32 @@ namespace PassKeeper.ViewModels.Windows
         }
 
         [RelayCommand]
-        private void CreateOrLogin()
+        private async Task CreateOrLogin()
         {
             if (IsNewUser)
             {
-                if (string.IsNullOrEmpty(MasterKey) || string.IsNullOrEmpty(RepeatMKey))
+                if (string.IsNullOrEmpty(MasterKey) || string.IsNullOrEmpty(RepeatMKey) || string.IsNullOrEmpty(Email))
                 {
                     ErrorMessage = "Fields cannot be left empty.";
                     ErrorMessageVisibility = true;
                     SuccessMessageVisibility = false;
-                    MasterKey = RepeatMKey = string.Empty;
                     return;
                 }
-
+                
+                if(Email.Contains(' '))
+                {
+                    ErrorMessage = "Email cannot contain spaces.";
+                    ErrorMessageVisibility = true;
+                    SuccessMessageVisibility = false;
+                    return;
+                }else if(!Email.Contains('@') || !Email.Contains('.'))
+                {
+                    ErrorMessage = "Invalid email.";
+                    ErrorMessageVisibility = true;
+                    SuccessMessageVisibility = false;
+                    return;
+                }
+                
                 if (MasterKey != RepeatMKey)
                 {
                     ErrorMessage = "The keys do not match.";
@@ -109,16 +130,31 @@ namespace PassKeeper.ViewModels.Windows
                     MasterKey = RepeatMKey = string.Empty;
                     return;
                 }
+                
+                if (MasterKey.Length < 8)
+                {
+                    ErrorMessage = "The password must be at least 8 characters long.";
+                    ErrorMessageVisibility = true;
+                    SuccessMessageVisibility = false;
+                    MasterKey = RepeatMKey = string.Empty;
+                    return;
+                }
 
                 try
                 {
-                    currentUser.MasterKey.SetMasterKey(MasterKey);
-
-                    SuccessMessage = "Master key created successfully.";
+                    CurrentUser.Email = Email;
+                    CurrentUser.PasswordHash = PasswordHasher.HashPassword(MasterKey);
+                    CurrentUser.CreationDate = DateTime.Now;
+                    CurrentUser.Id = Guid.NewGuid().ToString();
+                    
+                    
+                    SuccessMessage = "Account created successfully.";
                     SuccessMessageVisibility = true;
                     ErrorMessageVisibility = false;
 
-                    currentUser.SaveToFile();
+                    CurrentUser.IsRegistered = true;
+                    await CurrentUser.Register();
+                    
 
                     var mainWindow = App.GetService<MainWindow>();
                     mainWindow?.Show();
@@ -135,19 +171,20 @@ namespace PassKeeper.ViewModels.Windows
             }
             else
             {
-                bool isCorrect = currentUser.MasterKey.CheckMasterKey(MasterKey ?? string.Empty);
+                CurrentUser.Email = Email;
+                CurrentUser.PasswordHash = MasterKey;
+                bool isCorrect = await CurrentUser.Login(Email, MasterKey);
 
                 if (!isCorrect)
                 {
-                    ErrorMessage = "The key file was not found or the key is incorrect.";
+                    ErrorMessage = "The account was not found check your email and password.";
                     ErrorMessageVisibility = true;
                     SuccessMessageVisibility = false;
                     MasterKey = RepeatMKey = string.Empty;
-                    return;
                 }
                 else if (isCorrect)
                 {
-                    SuccessMessage = "Correct master key.";
+                    SuccessMessage = "Correct credentials.";
                     SuccessMessageVisibility = true;
                     ErrorMessageVisibility = false;
 
@@ -161,18 +198,17 @@ namespace PassKeeper.ViewModels.Windows
                     ErrorMessage = "Fields cannot be left blank.";
                     ErrorMessageVisibility = true;
                     SuccessMessageVisibility = false;
-                    return;
                 }
             }
         }
 
-        private void OnExit()
+        private static void OnExit()
         {
             Application.Current.Windows.OfType<LoginWindow>().FirstOrDefault()?.Close();
         }
 
         [RelayCommand]
-        private void CloseLogin()
+        private static void CloseLogin()
         {
             Application.Current.Windows.OfType<LoginWindow>().FirstOrDefault()?.Close();
         }

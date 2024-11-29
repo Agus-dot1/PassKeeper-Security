@@ -1,39 +1,39 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using PassKeeper.Helpers;
-using PassKeeper.Views.Windows;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using PassKeeper.Helpers;
+using PassKeeper.Views.Windows;
 using Wpf.Ui.Controls;
 using MessageBox = Wpf.Ui.Controls.MessageBox;
 using MessageBoxResult = Wpf.Ui.Controls.MessageBoxResult;
 using TextBlock = Wpf.Ui.Controls.TextBlock;
 
-namespace PassKeeper.ViewModels
+namespace PassKeeper.ViewModels.Windows
 {
     public partial class AddPasswordViewModel : ObservableObject
     {
-        [ObservableProperty] public string? generatedPassword;
-        [ObservableProperty] public int passwordStrength;
-        [ObservableProperty] public int id;
-        [ObservableProperty] public string? name;
-        [ObservableProperty] public string? username;
-        [ObservableProperty] public string? url;
-        [ObservableProperty] public string? note;
-        [ObservableProperty] public int selectedIcon;
-        [ObservableProperty] public string? icon;
+        [ObservableProperty] private string? _generatedPassword;
+        [ObservableProperty] private int _passwordStrength;
+        [ObservableProperty] private int _id;
+        [ObservableProperty] private string? _name;
+        [ObservableProperty] private string? _username;
+        [ObservableProperty] private string? _url;
+        [ObservableProperty] private string? _note;
+        [ObservableProperty] private int _selectedIcon;
+        [ObservableProperty] private string? _icon;
 
         public ObservableCollection<SymbolIcon> IconOptions { get; set; } = Icons.IconOptions;
 
         public string FilePath { get; internal set; }
-        public bool PasswordAdded { get; set; } = false;
+        public bool PasswordAdded { get; private set; }
         
         public AddPasswordViewModel()
         {
-            selectedIcon = 0;
+            _selectedIcon = 0;
         }
 
         [RelayCommand] public void SavePassword()
@@ -84,7 +84,6 @@ namespace PassKeeper.ViewModels
             PasswordAdded = true;
             messageBox2.ShowDialogAsync();
             Application.Current.Windows.OfType<AddPasswordWindow>().FirstOrDefault()?.Close();
-            return;
         }
 
         [RelayCommand]
@@ -122,10 +121,10 @@ namespace PassKeeper.ViewModels
             const string numbers = "0123456789";
             const string specialChars = "!@#$%^&()-+?_=,<>/.;{}[]";
 
-            StringBuilder charPool = new StringBuilder(letters + numbers + specialChars);
-            StringBuilder password = new StringBuilder();
+            var charPool = new StringBuilder(letters + numbers + specialChars);
+            var password = new StringBuilder();
 
-            Random random = new Random();
+            var random = new Random();
 
             for (int i = 0; i < 22; i++)
             {
@@ -137,7 +136,7 @@ namespace PassKeeper.ViewModels
 
 
         [RelayCommand]
-        public void Cancel()
+        private static void Cancel()
         {
             var messageBox = new MessageBox
             {

@@ -1,5 +1,6 @@
 ﻿using PassKeeper.ViewModels;
 using System.Windows;
+using AddPasswordViewModel = PassKeeper.ViewModels.Windows.AddPasswordViewModel;
 
 namespace PassKeeper.Views.Windows
 {

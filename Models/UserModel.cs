@@ -1,26 +1,29 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.Json;
-using Wpf.Ui.Appearance;
+using MySqlConnector;
+using PassKeeper.Db;
+using PassKeeper.Helpers;
 
 namespace PassKeeper.Models
 {
     public class UserModel
     {
+        public string Id { get; set; }
         public string FilePath { get; set; }
+        public string Email { get; set; }   
+        public string PasswordHash { get; set; }
         public MasterKeyModel MasterKey { get; set; }
         public ObservableCollection<Passwords> Passwords { get; set; }
-
-        
-
+        public DateTime CreationDate { get; set; }
+        public bool IsRegistered { get; set; }
 
         public UserModel(MasterKeyModel masterKey)
         {
             string dbDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "databases");
             FilePath = Path.Combine(dbDirectory, "database.pks");
             Directory.CreateDirectory(dbDirectory);
-
+            
             MasterKey = masterKey;
             Passwords = new ObservableCollection<Passwords>();
         }
@@ -45,10 +48,66 @@ namespace PassKeeper.Models
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al guardar el archivo: {ex.Message}");
+                Console.WriteLine($"Error saving to file: {ex.Message}");
             }
         }
 
+        public async Task Register()
+        {
+            try
+            {
+                string query = @"INSERT INTO Users (id, email, password_hash, created_at) 
+                               VALUES (@Id, @Email, @PasswordHash, @CreationDate)
+                               ON DUPLICATE KEY UPDATE 
+                                   email = @Email, 
+                                   password_hash = @PasswordHash, 
+                                   created_at = @CreationDate";
+
+                await using var connection = DatabaseConnection.GetConnection();
+                await using var command = new MySqlCommand(query, connection);
+                
+                command.Parameters.AddWithValue("@Id", Id);
+                command.Parameters.AddWithValue("@Email", Email);
+                command.Parameters.AddWithValue("@PasswordHash", PasswordHash);
+                command.Parameters.AddWithValue("@CreationDate", CreationDate);
+                
+                int rowsAffected = await command.ExecuteNonQueryAsync();
+                Console.WriteLine($"{rowsAffected} rows affected.");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public async Task<bool> Login(string email, string password)
+        {
+            try
+            {
+                string query = "SELECT password_hash FROM Users WHERE email = @Email";
+
+                await using var connection = DatabaseConnection.GetConnection();
+                await using var command = new MySqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Email", email);
+
+                await using var reader = await command.ExecuteReaderAsync();
+
+                if (await reader.ReadAsync())
+                {
+                    var storedPassword = reader["password_hash"].ToString();
+                    bool passwordMatch = PasswordHasher.VerifyPassword(password, storedPassword);
+                    return passwordMatch;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error logging in: {ex.Message}");
+                return false;
+            }
+            return false;
+        }
+        
         public static UserModel? LoadFromFile(string filePath)
         {
             if(!File.Exists(filePath)) return null;
@@ -62,7 +121,7 @@ namespace PassKeeper.Models
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al cargar el archivo: {ex.Message}");
+                Console.WriteLine($"Error loading from file: {ex.Message}");
                 return null;
             }
         }

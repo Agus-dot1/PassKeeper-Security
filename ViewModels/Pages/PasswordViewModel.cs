@@ -33,9 +33,9 @@ namespace PassKeeper.ViewModels.Pages
 
         public void LoadPasswords()
         {
-            if (File.Exists(loginWindowViewModel.currentUser.FilePath) && loginWindowViewModel.currentUser.Passwords.Count > 0) {
+            if (File.Exists(loginWindowViewModel.CurrentUser.FilePath) && loginWindowViewModel.CurrentUser.Passwords.Count > 0) {
                 PasswordsCollection.Clear();
-                foreach (var password in loginWindowViewModel.currentUser.Passwords)
+                foreach (var password in loginWindowViewModel.CurrentUser.Passwords)
                 {
                     PasswordsCollection.Add(password);
                 }
@@ -69,9 +69,9 @@ namespace PassKeeper.ViewModels.Pages
             try
             {
                 var addPasswordWindow = new AddPasswordWindow();
-                var addPasswordViewModel = new AddPasswordViewModel
+                var addPasswordViewModel = new Windows.AddPasswordViewModel
                 {
-                    FilePath = loginWindowViewModel.currentUser.FilePath
+                    FilePath = loginWindowViewModel.CurrentUser.FilePath
                 };
 
                 addPasswordWindow.DataContext = addPasswordViewModel;
@@ -92,8 +92,8 @@ namespace PassKeeper.ViewModels.Pages
                     };
 
 
-                    loginWindowViewModel.currentUser.Passwords.Add(newPassword);
-                    loginWindowViewModel.currentUser.SaveToFile();
+                    loginWindowViewModel.CurrentUser.Passwords.Add(newPassword);
+                    loginWindowViewModel.CurrentUser.SaveToFile();
                     PasswordsCollection.Add(newPassword);
                 }
                 FilterPasswords();
@@ -144,7 +144,7 @@ namespace PassKeeper.ViewModels.Pages
             try
             {
                 var addPasswordWindow = new AddPasswordWindow();
-                var addPasswordViewModel = new AddPasswordViewModel();
+                var addPasswordViewModel = new Windows.AddPasswordViewModel();
                 ObservableCollection<SymbolIcon> iconOptions = Icons.IconOptions;
 
                 var icon = 0;
@@ -159,7 +159,7 @@ namespace PassKeeper.ViewModels.Pages
 
 
                 iconOptions[icon].Name = password.Icon;
-                addPasswordViewModel.FilePath = loginWindowViewModel.currentUser.FilePath;
+                addPasswordViewModel.FilePath = loginWindowViewModel.CurrentUser.FilePath;
                 addPasswordViewModel.GeneratedPassword = password.Password;
                 addPasswordViewModel.Name = password.Name;
                 addPasswordViewModel.Username = password.Username;
@@ -178,7 +178,7 @@ namespace PassKeeper.ViewModels.Pages
                     password.Icon = password.Icon == addPasswordViewModel.Icon ? iconOptions[icon].Name : addPasswordViewModel.Icon;
                     password.Url = addPasswordViewModel.Url;
                     password.Notes = addPasswordViewModel.Note;
-                    loginWindowViewModel.currentUser.SaveToFile();
+                    loginWindowViewModel.CurrentUser.SaveToFile();
                 }
                 LoadPasswords();
                 FilterPasswords();
@@ -225,8 +225,8 @@ namespace PassKeeper.ViewModels.Pages
             {
                 try
                 {
-                    loginWindowViewModel.currentUser.Passwords.Remove(password);
-                    loginWindowViewModel.currentUser.SaveToFile();
+                    loginWindowViewModel.CurrentUser.Passwords.Remove(password);
+                    loginWindowViewModel.CurrentUser.SaveToFile();
                     PasswordsCollection.Remove(password);
                 }
                 catch (Exception ex)
