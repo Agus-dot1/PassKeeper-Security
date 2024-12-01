@@ -6,6 +6,7 @@ using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PassKeeper.Helpers;
+using PassKeeper.Services;
 using PassKeeper.Views.Windows;
 using Wpf.Ui.Controls;
 using MessageBox = Wpf.Ui.Controls.MessageBox;
@@ -25,6 +26,7 @@ namespace PassKeeper.ViewModels.Windows
         [ObservableProperty] private string? _note;
         [ObservableProperty] private int _selectedIcon;
         [ObservableProperty] private string? _icon;
+
 
         public ObservableCollection<SymbolIcon> IconOptions { get; set; } = Icons.IconOptions;
 
@@ -62,27 +64,8 @@ namespace PassKeeper.ViewModels.Windows
                 return;
             }
 
-            var messageBox2 = new MessageBox
-            {
-                Title = "Password created successfully.",
-                Content = new StackPanel
-                {
-                    Orientation = Orientation.Horizontal,
-                    Children =
-                    {
-                        new TextBlock
-                        {
-                            Text = "The password has been created successfully.",
-                            VerticalAlignment = VerticalAlignment.Center
-                        }
-                    },
-                },
-                Background = new SolidColorBrush(Color.FromArgb(255, 16, 23, 41)),
-                CloseButtonText = "Accept"
-            };
             Icon = IconOptions[SelectedIcon].Name;
             PasswordAdded = true;
-            messageBox2.ShowDialogAsync();
             Application.Current.Windows.OfType<AddPasswordWindow>().FirstOrDefault()?.Close();
         }
 

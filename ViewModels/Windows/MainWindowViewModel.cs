@@ -36,7 +36,7 @@ namespace PassKeeper.ViewModels.Windows
         [ObservableProperty]
         private ObservableCollection<MenuItem> _trayMenuItems = new()
         {
-            new MenuItem { Header = "Passwords", Tag = "tray_Passwords" }
+            new MenuItem { Header = "PasswordsModel", Tag = "tray_Passwords" }
         };
     }
 }

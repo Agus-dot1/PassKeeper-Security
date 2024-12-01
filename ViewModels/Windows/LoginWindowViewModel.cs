@@ -11,15 +11,19 @@ using MessageBox = Wpf.Ui.Controls.MessageBox;
 using MessageBoxResult = Wpf.Ui.Controls.MessageBoxResult;
 using TextBlock = Wpf.Ui.Controls.TextBlock;
 using PassKeeper.Helpers;
+using Color = System.Windows.Media.Color;
+using PassKeeper.Services;
 
 namespace PassKeeper.ViewModels.Windows
 {
     public partial class LoginWindowViewModel : ObservableObject
     {
         public UserModel CurrentUser;
+        private readonly PasswordService _passwordService;
+        [ObservableProperty] private string _id;
         [ObservableProperty] private string _email;
         [ObservableProperty] private string _masterKey;
-        [ObservableProperty] private string _repeatMKey;
+        [ObservableProperty] private string? _repeatMKey;
         [ObservableProperty] private bool _isNewUser;
         [ObservableProperty] private string? _createButtonContent;
         [ObservableProperty] private string? _errorMessage;
@@ -29,9 +33,7 @@ namespace PassKeeper.ViewModels.Windows
 
         public LoginWindowViewModel()
         {
-            string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "databases", "database.pks");
-            CurrentUser = UserModel.LoadFromFile(dbPath) ?? new UserModel(new MasterKeyModel());
-            IsNewUser = CurrentUser.IsRegistered;
+            IsNewUser = false;
             CreateButtonContent = IsNewUser ? "Create" : "Open Vault";
         }
 
@@ -88,7 +90,7 @@ namespace PassKeeper.ViewModels.Windows
                     }
                 }
 
-                CurrentUser = new UserModel(new MasterKeyModel());
+                CurrentUser = new UserModel();
                 IsNewUser = true;
                 CreateButtonContent = "Create";
                 MasterKey = RepeatMKey = string.Empty;
@@ -114,7 +116,9 @@ namespace PassKeeper.ViewModels.Windows
                     ErrorMessageVisibility = true;
                     SuccessMessageVisibility = false;
                     return;
-                }else if(!Email.Contains('@') || !Email.Contains('.'))
+                }
+                
+                if(!Email.Contains('@') && !Email.Contains('.'))
                 {
                     ErrorMessage = "Invalid email.";
                     ErrorMessageVisibility = true;
@@ -142,20 +146,21 @@ namespace PassKeeper.ViewModels.Windows
 
                 try
                 {
+
                     CurrentUser.Email = Email;
                     CurrentUser.PasswordHash = PasswordHasher.HashPassword(MasterKey);
                     CurrentUser.CreationDate = DateTime.Now;
                     CurrentUser.Id = Guid.NewGuid().ToString();
                     
                     
+                    
                     SuccessMessage = "Account created successfully.";
                     SuccessMessageVisibility = true;
                     ErrorMessageVisibility = false;
-
+    
                     CurrentUser.IsRegistered = true;
                     await CurrentUser.Register();
                     
-
                     var mainWindow = App.GetService<MainWindow>();
                     mainWindow?.Show();
 
@@ -171,9 +176,7 @@ namespace PassKeeper.ViewModels.Windows
             }
             else
             {
-                CurrentUser.Email = Email;
-                CurrentUser.PasswordHash = MasterKey;
-                bool isCorrect = await CurrentUser.Login(Email, MasterKey);
+                bool isCorrect = await UserModel.Login(Email, MasterKey);
 
                 if (!isCorrect)
                 {

@@ -4,15 +4,14 @@ using System.Windows.Input;
 
 namespace PassKeeper.Views.Windows
 {
-    /// <summary>
-    /// Lógica de interacción para LoginWindow.xaml
-    /// </summary>
     public partial class LoginWindow : Window
     {
-        public LoginWindow()
+        private LoginWindowViewModel ViewModel { get; } 
+        public LoginWindow(LoginWindowViewModel viewModel)
         {
             InitializeComponent();
-            DataContext = new LoginWindowViewModel();
+            ViewModel = viewModel;
+            DataContext = ViewModel;
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)

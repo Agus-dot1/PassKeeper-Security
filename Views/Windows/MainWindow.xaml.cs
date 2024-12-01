@@ -7,9 +7,6 @@ using Wpf.Ui.Controls;
 
 namespace PassKeeper.Views.Windows
 {
-    /// <summary>
-    /// Lógica de interacción para MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : INavigationWindow
     {
         public MainWindowViewModel ViewModel { get; }

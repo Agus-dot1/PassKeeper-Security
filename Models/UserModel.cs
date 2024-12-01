@@ -11,29 +11,29 @@ namespace PassKeeper.Models
     {
         public string Id { get; set; }
         public string FilePath { get; set; }
-        public string Email { get; set; }   
+        public string Email { get; set; }
         public string PasswordHash { get; set; }
         public MasterKeyModel MasterKey { get; set; }
-        public ObservableCollection<Passwords> Passwords { get; set; }
+        public ObservableCollection<PasswordsModel> Passwords { get; set; }
         public DateTime CreationDate { get; set; }
         public bool IsRegistered { get; set; }
 
-        public UserModel(MasterKeyModel masterKey)
+        public UserModel()
         {
             string dbDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "databases");
             FilePath = Path.Combine(dbDirectory, "database.pks");
             Directory.CreateDirectory(dbDirectory);
             
-            MasterKey = masterKey;
-            Passwords = new ObservableCollection<Passwords>();
+            CreationDate = DateTime.Now;
+            Passwords = new ObservableCollection<PasswordsModel>();
         }
 
-        public void AddPassword(Passwords password)
+        public void AddPassword(PasswordsModel password)
         {
             Passwords.Add(password);
             SaveToFile();
         }
-        public void RemovePassword(Passwords password)
+        public void RemovePassword(PasswordsModel password)
         {
             Passwords.Remove(password);
             SaveToFile();
@@ -81,11 +81,11 @@ namespace PassKeeper.Models
             }
         }
 
-        public async Task<bool> Login(string email, string password)
+        public static async Task<bool> Login(string email, string password)
         {
             try
             {
-                string query = "SELECT password_hash FROM Users WHERE email = @Email";
+                const string query = "SELECT password_hash FROM Users WHERE email = @Email";
 
                 await using var connection = DatabaseConnection.GetConnection();
                 await using var command = new MySqlCommand(query, connection);
@@ -96,7 +96,7 @@ namespace PassKeeper.Models
                 if (await reader.ReadAsync())
                 {
                     var storedPassword = reader["password_hash"].ToString();
-                    bool passwordMatch = PasswordHasher.VerifyPassword(password, storedPassword);
+                    bool passwordMatch = storedPassword != null && PasswordHasher.VerifyPassword(password, storedPassword);
                     return passwordMatch;
                 }
             }
@@ -111,8 +111,7 @@ namespace PassKeeper.Models
         public static UserModel? LoadFromFile(string filePath)
         {
             if(!File.Exists(filePath)) return null;
-
-
+            
             try
             {
                 string jsonData = File.ReadAllText(filePath);
@@ -125,10 +124,6 @@ namespace PassKeeper.Models
                 return null;
             }
         }
-
-
-
-
 
     }
 }
