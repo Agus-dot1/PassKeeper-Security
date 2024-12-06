@@ -17,7 +17,6 @@
         Title="LoginWindow" Height="730" Width="450">
     <Window.Resources>
         <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-        <conv:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" />
     </Window.Resources>
     <Border CornerRadius="10" BorderBrush="#384150" BorderThickness="1" Background="#101729">
         <Grid Margin="30">
@@ -34,7 +33,7 @@
                 </ui:Button.Icon>
             </ui:Button>
 
-
+            <!-- Create -->
             <StackPanel Grid.Row="1"
                         Visibility="{Binding IsNewUser, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Border CornerRadius="100" Background="#15223e" Padding="10" HorizontalAlignment="Center">
@@ -56,9 +55,9 @@
                 </TextBlock>
             </StackPanel>
 
-
+            <!-- Login -->
             <StackPanel Grid.Row="1" Margin="0,20,0,0"
-                        Visibility="{Binding IsNewUser, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
+                        Visibility="{Binding IsLoginVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                 <ui:SymbolIcon Symbol="LockShield48" FontSize="120" Foreground="#378bf3" Margin="0,0,0,10" />
                 <TextBlock FontSize="32" FontWeight="Bold" HorizontalAlignment="Center" Foreground="#378bf3">
                     Log in

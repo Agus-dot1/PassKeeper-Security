@@ -29,13 +29,16 @@ public partial class LoginWindowViewModel : ObservableObject
     [ObservableProperty] private string passwordStrengthText;
     [ObservableProperty] private string passwordStrengthColor;
     [ObservableProperty] private double animatedPasswordStrength;
+    [ObservableProperty] private bool isLoginVisible;
+
 
     public LoginWindowViewModel()
     {
         var dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "databases", "database.pks");
         CurrentUser = UserModel.LoadFromFile(dbPath) ?? new UserModel(new MasterKeyModel());
-        IsNewUser = string.IsNullOrEmpty(CurrentUser.MasterKey.HashedKey);
-        CreateButtonContent = IsNewUser ? "Create" : "Open Vault";
+        isLoginVisible = string.IsNullOrEmpty(CurrentUser.MasterKey.HashedKey);
+        CreateButtonContent = isLoginVisible ? "Create" : "Open Vault";
+        IsNewUser = !isLoginVisible;
     }
 
 
@@ -89,7 +92,8 @@ public partial class LoginWindowViewModel : ObservableObject
                 }
 
             CurrentUser = new UserModel(new MasterKeyModel());
-            IsNewUser = true;
+            IsNewUser = false;
+            IsLoginVisible = true;
             CreateButtonContent = "Create";
             MasterKey = RepeatMKey = string.Empty;
         }
@@ -98,7 +102,7 @@ public partial class LoginWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task CreateOrLogin()
     {
-        if (IsNewUser)
+        if (isLoginVisible)
         {
             if (string.IsNullOrEmpty(MasterKey) || string.IsNullOrEmpty(RepeatMKey))
             {
@@ -127,8 +131,7 @@ public partial class LoginWindowViewModel : ObservableObject
                 return;
             }
 
-            if (PasswordStrengthText == "Weak" || PasswordStrengthText == "Very Weak" ||
-                PasswordStrengthText == "Medium")
+            if (PasswordStrengthText is "Weak" or "Very Weak" or "Medium")
             {
                 var messageBox = new MessageBox
                 {

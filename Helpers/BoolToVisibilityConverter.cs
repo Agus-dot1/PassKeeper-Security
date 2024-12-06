@@ -6,13 +6,13 @@ namespace PassKeeper.Helpers;
 
 public class BoolToVisibilityConverter : IValueConverter
 {
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        return value is bool isVisible && isVisible ? Visibility.Visible : Visibility.Collapsed;
+        return value is bool boolValue && boolValue ? Visibility.Collapsed : Visibility.Visible;
     }
 
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object? ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        return value is Visibility visibility && visibility == Visibility.Visible;
+        return null; // not needed
     }
 }

@@ -18,7 +18,7 @@ namespace PassKeeper.ViewModels.Pages;
 
 public partial class PasswordViewModel : ObservableObject
 {
-    public bool IsPasswordsNull => !FilteredPasswordsCollection.Any();
+    public bool IsPasswordsNull => FilteredPasswordsCollection.Any();
     [ObservableProperty] private string? searchText;
     private readonly LoginWindowViewModel loginWindowViewModel = new();
     private ObservableCollection<PasswordModel> PasswordsCollection { get; set; } = new();
