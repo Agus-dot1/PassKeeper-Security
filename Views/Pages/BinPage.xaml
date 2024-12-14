@@ -16,17 +16,18 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="160" />
+                <ColumnDefinition Width="200" />
             </Grid.ColumnDefinitions>
             <Grid Margin="20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
+                
                 <ui:AutoSuggestBox Padding="10" MaxSuggestionListHeight="300" IsSuggestionListOpen="False"
                    ItemsSource="{Binding DeletedPasswordsCollection}"
                    Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                   BorderBrush="#378bf3" x:Name="AutoSuggestBox" Margin="0, 15,0,10"
+                   BorderBrush="#378bf3" x:Name="AutoSuggestBox" Margin="5, 15, 5,10"
                    PlaceholderText="Search deleted password">
                     <ui:AutoSuggestBox.Icon>
                         <ui:IconSourceElement>
@@ -34,33 +35,56 @@
                         </ui:IconSourceElement>
                     </ui:AutoSuggestBox.Icon>
                 </ui:AutoSuggestBox>
-                <ListBox Margin="0,0,0,10" ItemsSource="{Binding DeletedPasswordsCollection}" Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                
+                <ListBox Grid.Row="1" ItemsSource="{Binding DeletedPasswordsCollection, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <ListBox.Resources>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Padding" Value="0" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border Margin="5" CornerRadius="10">
+                                            <ContentPresenter />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.Resources>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Border HorizontalAlignment="Stretch" Margin="5" CornerRadius="10">
+                            <Border HorizontalAlignment="Stretch" CornerRadius="10" Background="#213353" Padding="22">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="auto" />
                                     </Grid.ColumnDefinitions>
                                     <StackPanel>
-                                        <TextBlock Text="{Binding Name}" />
-                                        <TextBlock Text="{Binding DeletedDate}" />
+                                        <TextBlock Foreground="#f2f2f2" FontSize="16" Text="{Binding Name}" />
+                                        <TextBlock Foreground="#CACACA" Text="{Binding Username}" />
+                                        <TextBlock FontSize="12" Foreground="#CACACA" Text="{Binding DeletedDate}" />
                                     </StackPanel>
                                     
                                     <StackPanel Grid.Column="1">
-                                        <ui:PasswordBox x:Name="PasswordBox" Icon="Password16" IconPlacement="Left" Text="{Binding Password}"></ui:PasswordBox>
-                                        <ProgressBar Maximum="100" Minimum="0" Foreground="#378bf3" Value="80"></ProgressBar>
+                                        <ui:PasswordBox ClearButtonEnabled="False" 
+                                                        IsReadOnly="True" 
+                                                        Background="#1f293a" Margin="0,0,0,5" 
+                                                        x:Name="PasswordBox" 
+                                                        Icon="Password16" 
+                                                        IconPlacement="Left" 
+                                                        Text="{Binding Password, Mode=OneWay}">
+                                        </ui:PasswordBox>
+                                        <ProgressBar Height="10" Maximum="100" Minimum="0" Foreground="#378bf3" Value="{Binding PasswordStrength}"></ProgressBar>
                                     </StackPanel>
                                     
-                                    <StackPanel Grid.Column="2" Orientation="Horizontal">
-                                        <ui:Button Margin="0,0,0,5"  HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" Background="#a563e9" Content="Restore">
+                                    <StackPanel Grid.Column="2" Margin="5,0,0,0" Orientation="Horizontal">
+                                        <ui:Button Command="{Binding RestorePasswordCommand}"  HorizontalContentAlignment="Left" VerticalAlignment="top" Height="33" HorizontalAlignment="Stretch" Background="#358b5b" Content="Restore">
                                             <ui:Button.Icon>  
                                                 <ui:SymbolIcon Symbol="ArrowReset20" />
                                             </ui:Button.Icon>
                                         </ui:Button>
-                                        <ui:Button Margin="0,0,0,5"  HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" Background="#a563e9" Content="Delete">
+                                        <ui:Button Command="{Binding DeletePasswordCommand}" Margin="5,0,0,0"  HorizontalContentAlignment="Left" Height="33" VerticalAlignment="top" HorizontalAlignment="Stretch" Background="#db2d3c" Content="Delete">
                                             <ui:Button.Icon>
                                                 <ui:SymbolIcon Symbol="Delete16" />
                                             </ui:Button.Icon>
@@ -73,7 +97,7 @@
                 </ListBox>
 
             </Grid>
-            <Border Grid.Column="1" Padding="10" Background="#101728">
+            <Border Grid.Column="1" Padding="24" Background="#101728">
                 <StackPanel>
                     <ui:TextBlock Margin="0,0,0,10" HorizontalAlignment="Left" Foreground="#f2f2f2" FontSize="16" FontWeight="SemiBold" Text="Quick Actions" />
                     <ui:Button Margin="0,0,0,5"  HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" Background="#a563e9" Content="Delete all">

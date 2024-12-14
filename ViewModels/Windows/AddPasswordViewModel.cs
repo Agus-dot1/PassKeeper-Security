@@ -180,7 +180,7 @@ public partial class AddPasswordViewModel : ObservableObject
 
 
     [RelayCommand]
-    private void Cancel()
+    private static void Cancel()
     {
         var messageBox = new MessageBox
         {

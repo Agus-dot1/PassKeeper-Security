@@ -16,9 +16,9 @@ namespace PassKeeper.ViewModels.Windows;
 
 public partial class LoginWindowViewModel : ObservableObject
 {
-    public UserModel CurrentUser;
-    [ObservableProperty] private string masterKey;
-    [ObservableProperty] private string repeatMKey;
+    public UserModel? CurrentUser = App.GetService<UserModel>();
+    [ObservableProperty] private string? masterKey;
+    [ObservableProperty] private string? repeatMKey;
     [ObservableProperty] private bool isNewUser;
     [ObservableProperty] private string? createButtonContent;
     [ObservableProperty] private string? errorMessage;
@@ -26,8 +26,8 @@ public partial class LoginWindowViewModel : ObservableObject
     [ObservableProperty] private bool errorMessageVisibility;
     [ObservableProperty] private bool successMessageVisibility;
     [ObservableProperty] private int passwordStrength;
-    [ObservableProperty] private string passwordStrengthText;
-    [ObservableProperty] private string passwordStrengthColor;
+    [ObservableProperty] private string? passwordStrengthText;
+    [ObservableProperty] private string? passwordStrengthColor;
     [ObservableProperty] private double animatedPasswordStrength;
     [ObservableProperty] private bool isLoginVisible;
 
@@ -103,7 +103,7 @@ public partial class LoginWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task CreateOrLogin()
     {
-        if (isLoginVisible)
+        if (IsLoginVisible)
         {
             if (string.IsNullOrEmpty(MasterKey) || string.IsNullOrEmpty(RepeatMKey))
             {
@@ -162,15 +162,17 @@ public partial class LoginWindowViewModel : ObservableObject
                 };
                 var result = await messageBox.ShowDialogAsync();
 
-                if (result == MessageBoxResult.Primary)
+                if (result == MessageBoxResult.Primary) {
                     try
                     {
-                        CurrentUser.MasterKey.SetMasterKey(MasterKey);
+                        if(CurrentUser is not null) {
+                            CurrentUser.MasterKey.SetMasterKey(MasterKey);
+                            CurrentUser.SaveToFile();
+                        }
                         SuccessMessage = "Master key created successfully.";
                         SuccessMessageVisibility = true;
                         ErrorMessageVisibility = false;
-
-                        CurrentUser.SaveToFile();
+                        
 
                         var mainWindow = App.GetService<MainWindow>();
                         mainWindow?.Show();
@@ -183,17 +185,20 @@ public partial class LoginWindowViewModel : ObservableObject
                         ErrorMessageVisibility = true;
                         SuccessMessageVisibility = false;
                     }
+                }
             }
             else
             {
                 try
                 {
-                    CurrentUser.MasterKey.SetMasterKey(MasterKey);
+                    if (CurrentUser is not null) {
+                        CurrentUser.MasterKey.SetMasterKey(MasterKey);
+                        CurrentUser.SaveToFile();
+                    }
+                    
                     SuccessMessage = "Master key created successfully.";
                     SuccessMessageVisibility = true;
                     ErrorMessageVisibility = false;
-
-                    CurrentUser.SaveToFile();
 
                     var mainWindow = App.GetService<MainWindow>();
                     mainWindow?.Show();
@@ -210,7 +215,8 @@ public partial class LoginWindowViewModel : ObservableObject
         }
         else
         {
-            var isCorrect = CurrentUser.MasterKey.CheckMasterKey(MasterKey);
+
+            var isCorrect = CurrentUser?.MasterKey.CheckMasterKey(MasterKey);
 
             switch (isCorrect)
             {

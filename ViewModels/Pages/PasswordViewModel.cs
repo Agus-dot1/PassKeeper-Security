@@ -20,10 +20,9 @@ public partial class PasswordViewModel : ObservableObject
 {
     public bool IsPasswordsNull => FilteredPasswordsCollection.Any();
     [ObservableProperty] private string? searchText;
-    private readonly LoginWindowViewModel loginWindowViewModel = new();
+    private readonly LoginWindowViewModel? loginWindowViewModel = new();
     private ObservableCollection<PasswordModel> PasswordsCollection { get; set; } = new();
     public ObservableCollection<PasswordModel> FilteredPasswordsCollection { get; set; } = new();
-    public object Name { get; internal set; }
 
     public PasswordViewModel()
     {
@@ -37,7 +36,12 @@ public partial class PasswordViewModel : ObservableObject
             loginWindowViewModel.CurrentUser.Passwords.Count > 0)
         {
             PasswordsCollection.Clear();
-            foreach (var password in loginWindowViewModel.CurrentUser.Passwords) PasswordsCollection.Add(password);
+            foreach (var password in loginWindowViewModel.CurrentUser.Passwords) {
+                if (!password.IsDeleted) {
+                    PasswordsCollection.Add(password);
+                }
+            }
+                
         }
 
         FilterPasswords();
@@ -82,6 +86,7 @@ public partial class PasswordViewModel : ObservableObject
                     Name = addPasswordViewModel.Name,
                     Username = addPasswordViewModel.Username,
                     Password = addPasswordViewModel.GeneratedPassword,
+                    PasswordStrength = addPasswordViewModel.PasswordStrength,
                     Icon = addPasswordViewModel.Icon,
                     Url = addPasswordViewModel.Url,
                     Notes = addPasswordViewModel.Note
@@ -166,6 +171,7 @@ public partial class PasswordViewModel : ObservableObject
                 passwordModel.Name = addPasswordViewModel.Name;
                 passwordModel.Username = addPasswordViewModel.Username;
                 passwordModel.Password = addPasswordViewModel.GeneratedPassword;
+                passwordModel.PasswordStrength = addPasswordViewModel.PasswordStrength;
                 passwordModel.Icon = passwordModel.Icon == addPasswordViewModel.Icon
                     ? iconOptions[icon].Name
                     : addPasswordViewModel.Icon;
@@ -227,7 +233,9 @@ public partial class PasswordViewModel : ObservableObject
             {
                 passwordModel.IsDeleted = true;
                 passwordModel.DeletedDate = DateTime.Now;
+                loginWindowViewModel?.CurrentUser?.SaveToFile();
                 PasswordsCollection.Remove(passwordModel);
+                OnPropertyChanged(nameof(IsPasswordsNull));
             }
             catch (Exception ex)
             {
@@ -255,4 +263,5 @@ public partial class PasswordViewModel : ObservableObject
 
         FilterPasswords();
     }
+
 }

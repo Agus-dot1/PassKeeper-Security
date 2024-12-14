@@ -1,6 +1,9 @@
-﻿namespace PassKeeper.Models;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
-public class PasswordModel
+namespace PassKeeper.Models;
+
+public partial class PasswordModel : ObservableObject
 {
     public bool UsernameIsNotEmpty => !string.IsNullOrEmpty(Username);
     public int Id { get; set; }
@@ -8,6 +11,7 @@ public class PasswordModel
     public string? Name { get; set; } = string.Empty;
     public string? Username { get; set; }
     public string? Password { get; set; } = string.Empty;
+    public int PasswordStrength { get; set; }
     public string? Url { get; set; }
     public string? Notes { get; set; }
     public DateTime CreationDate { get; set; }
@@ -20,5 +24,11 @@ public class PasswordModel
     {
         CreationDate = DateTime.Now;
         LastModified = DateTime.Now;
+    }
+
+    [RelayCommand]
+    public void RestorePassword() {
+        IsDeleted = false;
+        
     }
 }
