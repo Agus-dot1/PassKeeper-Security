@@ -23,7 +23,7 @@ public partial class PasswordViewModel : ObservableObject
     private readonly LoginWindowViewModel loginWindowViewModel = new();
     private ObservableCollection<PasswordModel> PasswordsCollection { get; set; } = new();
     public ObservableCollection<PasswordModel> FilteredPasswordsCollection { get; set; } = new();
-
+    public object Name { get; internal set; }
 
     public PasswordViewModel()
     {
@@ -31,7 +31,7 @@ public partial class PasswordViewModel : ObservableObject
         LoadPasswords();
     }
 
-    private void LoadPasswords()
+    public void LoadPasswords()
     {
         if (File.Exists(loginWindowViewModel.CurrentUser.FilePath) &&
             loginWindowViewModel.CurrentUser.Passwords.Count > 0)
@@ -44,7 +44,7 @@ public partial class PasswordViewModel : ObservableObject
         OnPropertyChanged(nameof(IsPasswordsNull));
     }
 
-    private void FilterPasswords()
+    public void FilterPasswords()
     {
         FilteredPasswordsCollection.Clear();
         foreach (var password in PasswordsCollection)
@@ -227,8 +227,6 @@ public partial class PasswordViewModel : ObservableObject
             {
                 passwordModel.IsDeleted = true;
                 passwordModel.DeletedDate = DateTime.Now;
-                loginWindowViewModel.CurrentUser.Passwords.Remove(passwordModel);
-                loginWindowViewModel.CurrentUser.SaveToFile();
                 PasswordsCollection.Remove(passwordModel);
             }
             catch (Exception ex)

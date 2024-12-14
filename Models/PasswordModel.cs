@@ -14,6 +14,7 @@ public class PasswordModel
     public DateTime LastModified { get; set; }
     public bool IsDeleted { get; set; } = false;
     public DateTime DeletedDate { get; set; }
+    public bool IsVisible { get; set; }
 
     public PasswordModel()
     {

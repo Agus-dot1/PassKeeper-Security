@@ -31,6 +31,7 @@ public partial class LoginWindowViewModel : ObservableObject
     [ObservableProperty] private double animatedPasswordStrength;
     [ObservableProperty] private bool isLoginVisible;
 
+    public int UserLoaded { get; internal set; }
 
     public LoginWindowViewModel()
     {

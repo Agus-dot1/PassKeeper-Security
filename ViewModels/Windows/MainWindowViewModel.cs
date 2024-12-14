@@ -14,8 +14,15 @@ public partial class MainWindowViewModel : ObservableObject
             Content = "Passwords",
             Icon = new SymbolIcon { Symbol = SymbolRegular.Key16 },
             TargetPageType = typeof(PasswordsPage)
+        },
+        new NavigationViewItem
+        {
+            Content = "Trash Bin",
+            Icon = new SymbolIcon { Symbol = SymbolRegular.Delete16 },
+            TargetPageType = typeof(BinPage)
         }
     };
+
 
     [ObservableProperty] private ObservableCollection<object> _footerMenuItems = new()
     {

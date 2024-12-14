@@ -5,62 +5,60 @@ using Wpf.Ui;
 using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
 
-namespace PassKeeper.Views.Windows
+namespace PassKeeper.Views.Windows; 
+public partial class MainWindow : INavigationWindow
 {
-    public partial class MainWindow : INavigationWindow
+    public MainWindowViewModel ViewModel { get; }
+    public MainWindow(
+        MainWindowViewModel viewModel,
+        INavigationService navigationService,
+        IPageService pageService)
     {
-        public MainWindowViewModel ViewModel { get; }
-        public MainWindow(
-            MainWindowViewModel viewModel,
-            INavigationService navigationService,
-            IPageService pageService)
-        {
-            MaxHeight = SystemParameters.WorkArea.Height;
+        MaxHeight = SystemParameters.WorkArea.Height;
 
-            ViewModel = viewModel;
-            DataContext = this;
+        ViewModel = viewModel;
+        DataContext = this;
 
-            SystemThemeWatcher.Watch(this);
+        SystemThemeWatcher.Watch(this);
 
-            InitializeComponent();
-            Loaded += OnLoaded;
-            SetPageService(pageService);
+        InitializeComponent();
+        Loaded += OnLoaded;
+        SetPageService(pageService);
 
-            navigationService.SetNavigationControl(RootNavigation);
+        navigationService.SetNavigationControl(RootNavigation);
 
-        }
+    }
 
-        private void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            RootNavigation.Navigate(typeof(PasswordsPage));
-        }
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
+        RootNavigation.Navigate(typeof(PasswordsPage));
+    }
 
-        public INavigationView GetNavigation() => RootNavigation;
+    public INavigationView GetNavigation() => RootNavigation;
 
-        public bool Navigate(Type pageType) => RootNavigation.Navigate(pageType);
+    public bool Navigate(Type pageType) => RootNavigation.Navigate(pageType);
 
-        public void SetPageService(IPageService pageService) => RootNavigation.SetPageService(pageService);
+    public void SetPageService(IPageService pageService) => RootNavigation.SetPageService(pageService);
 
-        public void ShowWindow() => Show();
+    public void ShowWindow() => Show();
 
-        public void CloseWindow() => Close();
+    public void CloseWindow() => Close();
 
 
-        protected override void OnClosed(EventArgs e)
-        {
-            base.OnClosed(e);
-            
-            Application.Current.Shutdown();
-        }
+    protected override void OnClosed(EventArgs e)
+    {
+        base.OnClosed(e);
+        
+        Application.Current.Shutdown();
+    }
 
-        INavigationView INavigationWindow.GetNavigation()
-        {
-            throw new NotImplementedException();
-        }
+    INavigationView INavigationWindow.GetNavigation()
+    {
+        throw new NotImplementedException();
+    }
 
-        public void SetServiceProvider(IServiceProvider serviceProvider)
-        {
-            throw new NotImplementedException();
-        }
+    public void SetServiceProvider(IServiceProvider serviceProvider)
+    {
+        throw new NotImplementedException();
     }
 }
