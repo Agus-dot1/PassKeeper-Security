@@ -12,6 +12,8 @@ public class PasswordModel
     public string? Notes { get; set; }
     public DateTime CreationDate { get; set; }
     public DateTime LastModified { get; set; }
+    public bool IsDeleted { get; set; } = false;
+    public DateTime DeletedDate { get; set; }
 
     public PasswordModel()
     {

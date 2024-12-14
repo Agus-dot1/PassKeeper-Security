@@ -222,8 +222,11 @@ public partial class PasswordViewModel : ObservableObject
         };
         var result = messageBox.ShowDialogAsync();
         if (result.Result == MessageBoxResult.Primary)
+        {
             try
             {
+                passwordModel.IsDeleted = true;
+                passwordModel.DeletedDate = DateTime.Now;
                 loginWindowViewModel.CurrentUser.Passwords.Remove(passwordModel);
                 loginWindowViewModel.CurrentUser.SaveToFile();
                 PasswordsCollection.Remove(passwordModel);
@@ -250,6 +253,7 @@ public partial class PasswordViewModel : ObservableObject
                 };
                 messageBox2.ShowDialogAsync();
             }
+        }
 
         FilterPasswords();
     }

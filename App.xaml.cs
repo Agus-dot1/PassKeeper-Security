@@ -60,6 +60,8 @@ namespace PassKeeper
                 services.AddSingleton<AddPasswordViewModel>();
                 services.AddSingleton<PasswordsPage>();
                 services.AddSingleton<PasswordViewModel>();
+                services.AddSingleton<BinPage>();
+                services.AddSingleton<BinViewModel>();
                 services.AddSingleton<SettingsPage>();
                 services.AddSingleton<SettingsViewModel>();
 
