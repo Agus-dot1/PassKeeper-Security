@@ -25,10 +25,4 @@ public partial class PasswordModel : ObservableObject
         CreationDate = DateTime.Now;
         LastModified = DateTime.Now;
     }
-
-    [RelayCommand]
-    public void RestorePassword() {
-        IsDeleted = false;
-        
-    }
 }

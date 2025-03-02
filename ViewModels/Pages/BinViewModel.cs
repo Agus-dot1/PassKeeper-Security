@@ -20,19 +20,23 @@ public partial class BinViewModel : ObservableObject
     public bool IsVisible { get; }
 
     public readonly LoginWindowViewModel? loginWindowViewModel = App.GetService<LoginWindowViewModel>();
+     
+    // PRIMERO QUYE NADA ASEGURATE DE QUE LA LISTA DE MIERDA SE CARGUE BIEN Y SE ACTUALICE. SEGUNDO AGREGA FUNCIONALIDAD DE RESTAURAR Y ELIMINAR POR COMPLETO EL PASSWORD                   
 
     [ObservableProperty]
     private string? searchText;
 
     public BinViewModel() {
         var currentUser = loginWindowViewModel?.CurrentUser;
-        LoadDeletedPasswords();
-        loginWindowViewModel.UserLoaded += OnUserLoaded;
-        if(currentUser == null) {
+        if (loginWindowViewModel != null) {
+            loginWindowViewModel.UserLoaded += OnUserLoaded;
+        }
+        if (currentUser == null) {
             IsVisible = false;
         }
+        LoadDeletedPasswords();
     }
-    private void LoadDeletedPasswords() {
+    public void LoadDeletedPasswords() {
         var currentUser = loginWindowViewModel?.CurrentUser;
 
         if (currentUser == null || string.IsNullOrEmpty(currentUser.FilePath)) {

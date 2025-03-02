@@ -36,7 +36,7 @@
                     </ui:AutoSuggestBox.Icon>
                 </ui:AutoSuggestBox>
                 
-                <ListBox Grid.Row="1" ItemsSource="{Binding DeletedPasswordsCollection, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                <ListBox Grid.Row="1" ItemsSource="{Binding DeletedPasswordsCollection, UpdateSourceTrigger=PropertyChanged}">
                     <ListBox.Resources>
                         <Style TargetType="ListBoxItem">
                             <Setter Property="Padding" Value="0" />
